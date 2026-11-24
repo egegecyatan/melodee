@@ -8,6 +8,9 @@
  * the MIDI Track engine, sequenced like the parts, never rendered or mixed (NMIDI).
  * Sections: sizes, parameters, voices and engines, tracks and the song, system. */
 #include <stdint.h>
+#ifndef RIFFTON_VERSION
+#define RIFFTON_VERSION "0.1.0"  /* riffton's own version: the boot screen, About (MELODEE_VERSION: the protocol's INFO) */
+#endif
 #include "performance_options.h"
 #include "tuning.h"
 #include "audio_profile.h"

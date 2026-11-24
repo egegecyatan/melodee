@@ -41,9 +41,6 @@
 #ifndef MELODEE_ID
 #define MELODEE_ID "FM-1_900"    /* package identity (build.py: the .fwsc marker string) */
 #endif
-#ifndef RIFFTON_VERSION
-#define RIFFTON_VERSION "0.1.0"  /* riffton's own version: the boot screen, the menu (Melodee's below: the protocol's) */
-#endif
 #ifndef MELODEE_VERSION
 #define MELODEE_VERSION "v1.6.1" /* shown in the menu, the console and the editor; build.py --release X.Y[.Z] */
 #endif

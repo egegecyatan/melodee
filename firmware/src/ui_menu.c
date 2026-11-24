@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-only
  * Copyright (C) 2026 Kerem Kilic (Ellic Studio)
  * Portions Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments */
-/* Melodee menu (HOME held): COLOR, FONT (the type: RUBIK or PIXEL, ui.c TY_*), HOLD (the layer threshold), LIGHTS (the keys' and buttons'
+/* Melodee menu (HOME held): COLOR, FONT (the type: GROTESK, riffton's Space Grotesk, or PIXEL, ui.c TY_*), HOLD (the layer threshold), LIGHTS (the keys' and buttons'
  * glow: ui_input.c ui_leds), KNOB ACCEL (ui_input.c accel_by), USB AUDIO (IN+OUT, IN, OUT or OFF; usb.c ua_off_set),
  * USB INPUT (stereo master or four track stems; usb.c ua_tracks_set),
  * USB HOST (the USB-C port hosts a USB-MIDI controller instead of talking to a computer; not saved; usb_host.c),
@@ -74,12 +74,20 @@ enum { MC_TEXT, MC_TITLE, MC_URL };
 typedef struct { const char *text; uint8_t kind; } menu_credit_t;
 static const menu_credit_t MENU_CREDITS[] = {
 #if MELODEE_BLE
-    {"OPTIMIST / BLE MIDI", MC_TITLE},
+    {"Optimist / BLE MIDI", MC_TITLE},
     {"w0ts/optimist contributors / GPL-3.0-only", MC_TEXT},
     {"https://github.com/w0ts/optimist", MC_URL},
     {"", MC_TEXT},
 #endif
-    {"FELUCCA / UPSTREAM", MC_TITLE},                  /* Melodee is a modified Felucca */
+    {"Melodee / HOST", MC_TITLE},                      /* riffton is a modified Melodee */
+    {"Kerem Kilic (Ellic Studio) / GPL-3.0-only", MC_TEXT},
+    {"https://github.com/keremimo/melodee", MC_URL},
+    {"", MC_TEXT},
+    {"FMini-1 / FMINI ENGINE", MC_TITLE},
+    {"Guilherme Ruppert / GPL-3.0-only", MC_TEXT},
+    {"https://github.com/ruppert/fmini-1", MC_URL},
+    {"", MC_TEXT},
+    {"Felucca / UPSTREAM", MC_TITLE},                  /* Melodee is a modified Felucca */
     {"H\xFCgelton Instruments, Leo Kuroshita / GPL-3.0", MC_TEXT},
     {"https://github.com/hugelton/Felucca", MC_URL},
     {"", MC_TEXT},
@@ -88,11 +96,11 @@ static const menu_credit_t MENU_CREDITS[] = {
     {"CrispyZebra (PHASE waveforms): GPL-3.0", MC_TEXT},
     {"https://github.com/hugelton", MC_URL},
     {"", MC_TEXT},
-    {"KLATTSCH / VOICE REFERENCE", MC_TITLE},
+    {"klattsch / VOICE REFERENCE", MC_TITLE},
     {"Tony Gies / MIT", MC_TEXT},
     {"https://github.com/tgies/klattsch", MC_URL},
     {"", MC_TEXT},
-    {"DAISYSP / PHYS PORT", MC_TITLE},
+    {"DaisySP / PHYS PORT", MC_TITLE},
     {"Electrosmith, Emilie Gillet", MC_TEXT},
     {"MIT", MC_TEXT},
     {"https://github.com/electro-smith/DaisySP", MC_URL},
@@ -101,23 +109,23 @@ static const menu_credit_t MENU_CREDITS[] = {
     {"Devin Acker / BSD-3-Clause", MC_TEXT},
     {"https://github.com/mamedev/mame", MC_URL},
     {"", MC_TEXT},
-    {"DEXED + MSFA / FM6 PORT", MC_TITLE},
+    {"Dexed + msfa / FM6 PORT", MC_TITLE},
     {"Pascal Gauthier, Google Inc.", MC_TEXT},
     {"msfa: Apache-2.0, Dexed: GPL-3.0", MC_TEXT},
     {"https://github.com/asb2m10/dexed", MC_URL},
     {"", MC_TEXT},
-    {"RESID / SID MODEL", MC_TITLE},
+    {"reSID / SID MODEL", MC_TITLE},
     {"Dag Lem / GPL-2.0-or-later", MC_TEXT},
     {"https://github.com/libsidplayfp/resid", MC_URL},
     {"", MC_TEXT},
-    {"RINGS / PHYS PORT", MC_TITLE},
+    {"Rings / PHYS PORT", MC_TITLE},
     {"Emilie Gillet / MIT", MC_TEXT},
     {"https://github.com/pichenettes/eurorack", MC_URL},
     {"", MC_TEXT},
-    {"RUBIK / FONT", MC_TITLE},
-    {"The Rubik Project Authors", MC_TEXT},
+    {"Space Grotesk / FONT", MC_TITLE},
+    {"The Space Grotesk Project Authors", MC_TEXT},
     {"SIL Open Font License 1.1", MC_TEXT},
-    {"https://github.com/googlefonts/rubik", MC_URL},
+    {"https://github.com/floriankarsten/space-grotesk", MC_URL},
     {"", MC_TEXT},
     {"VSCO-2 CE + VCSL / SAMPLES", MC_TITLE},
     {"Versilian Studios / CC0 1.0", MC_TEXT},
@@ -167,16 +175,18 @@ static int32_t menu_document(int32_t y, int draw)
 {
     uint32_t i;
     if (draw) {                                       /* (docs/design: mock/r6_pages About, the large type) */
-        cv_text(6, y + 2, TY_HR, "Melodee", T_THEME);
-        cv_text(6, y + 60, TY_TX, MELODEE_VERSION, T_TEXT);
-        cv_text(6, y + 86, TY_LB, __DATE__, T_MID);
-        draw_about_qr(158, y + 66);
+        cv_text(6, y + 2, RT_W, "riffton", T_TEXT);    /* (the wordmark, riffton's) */
+        cv_text(6, y + 60, TY_TX, "riffton " RIFFTON_VERSION, T_TEXT);
+        cv_text(6, y + 76, TY_LB, "Melodee " MELODEE_VERSION, T_MID);
+        cv_text(6, y + 92, TY_LB, __DATE__, T_MID);
+        draw_about_qr(158, y + 66);                   /* (Melodee's site: its manual) */
     }
-    y = menu_text("Multi-engine synthesizer", y + 146, T_SEC, draw);
-    y = menu_text("\xA9 2026 Kerem Kilic, Ellic Studio", y + 6, T_TEXT, draw);
+    y = menu_text("write the riff", y + 146, T_SEC, draw);
+    y = menu_text("Built on Melodee, \xA9 2026 Kerem Kilic (Ellic Studio)", y + 6, T_TEXT, draw);
+    y = menu_text("FMINI engine from FMini-1 by Guilherme Ruppert", y, T_TEXT, draw);
     y = menu_text("Based on Felucca by Leo Kuroshita, H\xFCgelton Instruments", y, T_TEXT, draw);
     y = menu_text("GPL-3.0-only", y, T_TEXT, draw);
-    y = menu_text("keremimo.github.io/melodee", y, T_MID, draw);
+    y = menu_text("Melodee: keremimo.github.io/melodee", y, T_MID, draw);
     y = menu_text("CREDITS", y + 14, T_THEME, draw) + 8;
     for (i = 0; i < NELEM(MENU_CREDITS); i++) {
         const menu_credit_t *c = &MENU_CREDITS[i];
@@ -322,7 +332,7 @@ static void draw_menu(void)
                     value = n ? v : "NONE";
                 }
                 if (i == MI_PICKER) value = PREF_BITS & PREF_PICK_OFF ? "OFF" : "ON";
-                if (i == MI_FONT) value = TY_PIXEL ? "PIXEL" : "RUBIK";
+                if (i == MI_FONT) value = TY_PIXEL ? "PIXEL" : "GROTESK";
                 if (i == MI_AUTOSAVE) value = settings_autosave ? "ON" : "OFF";
                 if (i == MI_HOME_SEL) value = HS_NAME[home_select()];
                 if (i == MI_GLO_SEL) value = HS_NAME[glo_select()];
@@ -495,7 +505,7 @@ static void menu_input(uint32_t oct)                  /* oct: ui_input.c oct_tap
         settings_autosave = (uint8_t)(s > 0 ? 1u : s < 0 ? 0u : !settings_autosave);
         ui.force = 1; ok = 0;
     }
-    if ((s || ok) && ui.menu == 1 && ui.menu_sel == MI_FONT) {   /* KNOB 1 right PIXEL, left RUBIK; OCT+ toggles */
+    if ((s || ok) && ui.menu == 1 && ui.menu_sel == MI_FONT) {   /* KNOB 1 right PIXEL, left GROTESK; OCT+ toggles */
         uint32_t px = s > 0 ? 1u : s < 0 ? 0u : !TY_PIXEL;
         PREF_BITS = (uint8_t)(px ? PREF_BITS | PREF_PIXEL : PREF_BITS & ~PREF_PIXEL);
         palette_set(settings.palette);                 /* (ux.gen: every part's signature, the rolls redraw) */

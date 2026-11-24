@@ -86,7 +86,7 @@ static void sound_name(const track_t *t, char *b);
 #define PREF_BITS (favorites.factory[15][30])
 #define PREF_ACCEL_OFF 2u
 #define PREF_PICK_OFF 32u
-#define PREF_PIXEL 64u                         /* Settings > FONT: PIXEL (else RUBIK) */
+#define PREF_PIXEL 64u                         /* Settings > FONT: PIXEL (else GROTESK: Space Grotesk) */
 #define TY_PIXEL ty_pixel()
 static uint32_t ty_pixel(void) { return (PREF_BITS & PREF_PIXEL) != 0u || !RES_OK(); }   /* (gfx.c TY_*; Rubik: res.c) */
 /* HOME SELECT (the menu): what SELECT turns on HOME, kept in favorites.factory[15][25] (0, any other: BPM) */

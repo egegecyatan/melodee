@@ -11,9 +11,6 @@
  * tokens (tools/gen_aa_font.py RIFFTON_TYPE), the colours the brief's tokens below. Sound names, roles and tags come
  * from tools/preset_names.csv (rt_sounds.h, the resource region). */
 #include "rt_sounds.h"
-#ifndef RIFFTON_VERSION
-#define RIFFTON_VERSION "0.1.0"    /* (melodee.c) */
-#endif
 
 /* ------------------------------------------------------------ tokens --- */
 #define RT_BG RGB(0x0E, 0x0E, 0x12)
