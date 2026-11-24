@@ -31,6 +31,7 @@ EXPORT(web_boot) void web_boot(uint32_t master)       /* main.c melodee_init, as
 {
     fm6_init();
     cz_init();
+    fmini_init();                                     /* FMINI: every part's patch, the noise seeds */
     ui_power_on();
     song.master_q12 = (master * master) >> 8;
     settings.palette = UI_DEFAULT_INDEX;
@@ -105,6 +106,7 @@ static void tick(void)
     fm1_ms++;
     host_ticks += 1000u;                               /* (ui_test.c: FM1_TICKS_PER_US 1) */
     ui_input();
+    fmini_poll();                                      /* FMINI: a turned SLOT loads its patch (main.c) */
     if (now_ms % 15u == 0u) {
         ui_leds();
         ui_draw();
