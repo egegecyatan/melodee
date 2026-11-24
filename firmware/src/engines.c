@@ -236,7 +236,17 @@ static uint32_t eng_step(uint32_t e, int32_t dir)
 /* the parts at power-on and in a new song (engine, preset; the steps empty): poly, bass, lead, drums. IT'S A
  * PROPHET 5, FM6 SOLID BASS, CZ-1 SYNTH.LEAD 1, 808 KIT (until 2026-10-16: PROPHET FUNK BASS II, FM6 PAD, SID INIT
  * SID, 808 KIT) */
+#ifndef RIFFTON_HOST_MELODEE
+#define RIFFTON_HOST_MELODEE 0  /* host tests of Melodee's own behaviour only: its home (Stage) and power-on sounds */
+#endif
+/* riffton (2026-11-24): the roles' sounds, BASS Moog Bass, LEAD Mini Lead (FMini-1's), PAD Soft Swell (the Prophet-5's),
+ * ARP Pluck (FM6) */
+static const uint8_t TRK_DEF_RT[NPART][2] = {{ENGI_FMINI, 1}, {ENGI_FMINI, 0}, {ENGI_PROPHET, 109}, {ENGI_FM6, 7}};
+#if RIFFTON_HOST_MELODEE
 static const uint8_t TRK_DEF[NPART][2] = {{ENGI_PROPHET, 1}, {ENGI_FM6, 10}, {ENGI_CZ, 52}, {ENGI_DRUM, 0}};
+#else
+#define TRK_DEF TRK_DEF_RT
+#endif
 /* track k's power-on engine and preset: TRK_DEF's, a MIDI-only track the MIDI Track's */
 static uint32_t trk_def_engine(uint32_t k) { return k < NPART ? TRK_DEF[k][0] : ENGI_MIDI; }
 static uint32_t trk_def_preset(uint32_t k) { return k < NPART ? TRK_DEF[k][1] : 0u; }

@@ -41,6 +41,9 @@
 #ifndef MELODEE_ID
 #define MELODEE_ID "FM-1_900"    /* package identity (build.py: the .fwsc marker string) */
 #endif
+#ifndef RIFFTON_VERSION
+#define RIFFTON_VERSION "0.1.0"  /* riffton's own version: the boot screen, the menu (Melodee's below: the protocol's) */
+#endif
 #ifndef MELODEE_VERSION
 #define MELODEE_VERSION "v1.6.1" /* shown in the menu, the console and the editor; build.py --release X.Y[.Z] */
 #endif
@@ -114,6 +117,7 @@ static uint8_t res_ok;                  /* res.c: installed and this build's; el
 #include "ui_menu.c"
 #include "ui_input.c"
 #include "ui_layer.c"              /* the quick layers (GLO SCL held) */
+#include "ui_riff.c"               /* riffton: RIFF, TRY, the boot screen */
 
 /* --------------------------------------------- storage, update, editor --- */
 #if MELODEE_FLASH

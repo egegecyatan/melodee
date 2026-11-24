@@ -119,10 +119,11 @@ def generate():
         (GEN / old).unlink(missing_ok=True)
     tools = SRC / "tools"
     subprocess.run([sys.executable, str(tools / "gen_scales.py"), "--check"], check=True)
-    cmds = [[tools / "gen_aa_font.py", GEN / "ui_fonts.h", "--preset", "rubik"],
+    cmds = [[tools / "gen_aa_font.py", GEN / "ui_fonts.h", "--preset", "riffton"],
             [tools / "gen_icons.py", GEN / "ui_icons.h"],
             [tools / "gen_aa_keycaps.py", GEN / "ui_keycaps.h"],
             [tools / "gen_ui_palettes.py", GEN / "ui_palettes.h"],
+            [tools / "gen_preset_names.py", "--header", GEN / "rt_sounds.h"],
             [tools / "gen_tables.py", GEN / "melodee_tables.h"],
             [tools / "gen_fm6_patches.py", GEN / "melodee_fm6.h"],
             [tools / "gen_cz1_factory.py", GEN / "melodee_cz1.h"],
@@ -621,6 +622,13 @@ def main():
     print(f"app      {OUT / 'melodee.bin'}  {len(img)} B")
     print(f"loader   {LDR / 'ota.bin'}  {len(ota)} B")
     print(f"package  {OUT / name}  {len(pkg)} B, identity {PRODUCT}")
+    # riffton's names for the same files (the riffton brief): riffton.fwsc with riffton-res.bin beside it, as
+    # tools/fm1_install.py looks for <package>-res.bin; riffton.bin the app
+    rname = name.replace("melodee", "riffton")
+    shutil.copyfile(OUT / name, OUT / rname)
+    shutil.copyfile(OUT / "melodee-res.bin", OUT / (Path(rname).stem + "-res.bin"))
+    shutil.copyfile(OUT / "melodee.bin", OUT / "riffton.bin")
+    print(f"riffton  {OUT / rname}, {OUT / (Path(rname).stem + '-res.bin')}, {OUT / 'riffton.bin'}")
     if a.cpu_manifest:
         if any(hashlib.sha256((SRC / p).read_bytes()).hexdigest() != digest for p, digest in cpu_sources.items()):
             raise SystemExit("Firmware source changed during CPU experiment build; rebuild before measuring")

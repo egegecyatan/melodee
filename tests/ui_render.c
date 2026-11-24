@@ -2349,6 +2349,46 @@ static void song_punch_sweep(const char *out)
     render_pixel = 0; cur_name = 0;
 }
 #ifndef UI_RENDER_NO_MAIN
+#include "riffton_demo.h"
+/* riffton's screens (ui_riff.c): RIFF, TRY (two columns changed) and the boot screen with the demo riff, in Space
+ * Grotesk and in Melodee Pixel (Settings > FONT: the text at 8 px and below), in the riffton palette. Linted like every
+ * screen, PPMs as riffton_<name>; not MONO-checked: a role keeps its colour in every palette (the riffton brief) */
+static void riffton_sweep(const char *out)
+{
+    static const char *const NAME[3] = {"riff", "try", "boot"};
+    int was = render_pixel;
+    for (uint32_t px = 0; px < 2u; px++)
+        for (uint32_t s = 0; s < 3u; s++) {
+            char name[64], file[32];
+            snprintf(file, sizeof file, "%s%s", NAME[s], px ? "_pixel" : "");
+            snprintf(name, sizeof name, "riffton/%s", file);
+            cur_name = name;
+            state();
+            render_pixel = (int)px;
+            pal(UI_DEFAULT_INDEX);
+            rt_demo();
+            memset(&rt, 0, sizeof rt);
+            rt.scr = s == 1u ? RT_TRY : RT_RIFF;
+            if (s == 1u) {
+                rt_keep();
+                rt_turn(1, 2);
+                rt_turn(3, -1);
+            }
+            ui.home = 1;
+            ui.force = 1;
+            nscr = npend = 0;
+            ntight = 0;
+            tight[0] = 0;
+            screen_clear();
+            if (s == 2u) rt_draw_boot();
+            else rt_draw();
+            lint();
+            write_ppm(out, "riffton", file);
+        }
+    render_pixel = was;
+    memset(&rt, 0, sizeof rt);
+}
+
 int main(int argc, char **argv)
 {
     const char *out = argc > 1 ? argv[1] : "build/ui_new";
@@ -2449,6 +2489,7 @@ int main(int argc, char **argv)
     sweep_host_headers();
 #endif
     sweep_screen_messages();
+    riffton_sweep(out);
     sweep_list_rows();
     sweep_columns();
     roll_frames(argc > 2 ? argv[2] : 0);

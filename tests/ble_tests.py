@@ -25,8 +25,8 @@ CASES = [
     ('ble_store_test', []),
     ('ble_settings_test', []),
     ('ble_cal_editor_test', ['-Itests/ble_fake', '-Ibuild/gen', '-Ifirmware/src', '-lm']),
-    ('ble_ui_render', ['-Itests/ble_fake', '-Ibuild/gen', '-Ifirmware/src', '-lm']),
-    ('ble_ui_render', ['-DMELODEE_USB_HOST=1', '-Itests/ble_fake', '-Ibuild/gen', '-Ifirmware/src', '-lm']),
+    ('ble_ui_render', ['-DRIFFTON_HOST_MELODEE=1', '-Itests/ble_fake', '-Ibuild/gen', '-Ifirmware/src', '-lm']),
+    ('ble_ui_render', ['-DRIFFTON_HOST_MELODEE=1', '-DMELODEE_USB_HOST=1', '-Itests/ble_fake', '-Ibuild/gen', '-Ifirmware/src', '-lm']),
     ('melodee_ble_test', ['-Itests/ble_fake', '-Ibuild/gen', '-Ifirmware/src', '-lm']),
 ]
 

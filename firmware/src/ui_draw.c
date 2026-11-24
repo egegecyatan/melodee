@@ -1270,6 +1270,8 @@ static void draw_toast(void)
     toast_shown = 1;
 }
 static void ui_draw_frame(void);
+static void rt_draw(void);                              /* ui_riff.c */
+static int rt_shown(void);
 static void ui_draw(void)                               /* (gfx.c: the fills wait for the frame's canvases) */
 {
     gfx_frame(1);
@@ -1326,6 +1328,10 @@ static void ui_draw_frame(void)
             ui.force = 0;
         }
         draw_head();                                    /* recording remains visible over confirmations */
+        return;
+    }
+    if (rt_shown()) {                                   /* riffton's screens (ui_riff.c) */
+        rt_draw();
         return;
     }
     if (smap.on && (ui.home || cur_page()->fam != FAM_EDIT || ui.layer))

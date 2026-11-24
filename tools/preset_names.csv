@@ -1,0 +1,512 @@
+engine,index,original,display,role,tags
+FMINI,0,MINI LEAD,Mini Lead,lead,held · buzzy
+FMINI,1,MOOG BASS,Moog Bass,bass,soft · dark
+FMINI,2,PLUCK ARP,Pluck Arp,arp,plucky · buzzy
+FMINI,3,PAD SWELL,Pad Swell,pad,slow · dark
+FMINI,4,SINE SOLO,Sine Solo,lead,round · held
+FMINI,5,SPACE DRONE,Space Drone,pad,wide · slow
+FMINI,6,CS-80 BRASS,CS-80 Brass,lead,slow · dark
+FMINI,7,LUSH STRINGS,Lush Strings,pad,wide · slow
+FMINI,8,AURA ATMOS,Aura Atmos,pad,slow · buzzy
+FMINI,9,UFO,UFO,fx,slow · buzzy
+FMINI,10,EMERSON,Emerson,lead,held · buzzy
+FMINI,11,NUMAN,Numan,lead,held · buzzy
+FMINI,12,HAMMER,Hammer,lead,punchy · buzzy
+FMINI,13,FIFTHS,Fifths,lead,held · buzzy
+FMINI,14,RAVE ARP,Rave Arp,lead,punchy · buzzy
+FMINI,15,ACID LEAD,Acid Lead,lead,punchy · dark
+FMINI,16,PULSE HERO,Pulse Hero,lead,held · buzzy
+FMINI,17,TITAN,Titan,lead,held · buzzy
+FMINI,18,FUZZ LEAD,Fuzz Lead,lead,buzzy · punchy
+FMINI,19,GROWL,Growl,lead,buzzy · held
+FMINI,20,MOOG FLUTE,Moog Flute,lead,round · held
+FMINI,21,G-FUNK,G-Funk,lead,held · buzzy
+FMINI,22,MEGA LEAD,Mega Lead,lead,soft · dark
+FMINI,23,BANKS,Banks,lead,held · buzzy
+FMINI,24,OBOE,Oboe,lead,held · buzzy
+FMINI,25,SOLO VIOLIN,Solo Violin,lead,slow · buzzy
+FMINI,26,DREAMER,Dreamer,lead,soft · round
+FMINI,27,WHISTLE,Whistle,lead,held · buzzy
+FMINI,28,MELLOW PULSE,Mellow Pulse,lead,round · held
+FMINI,29,SAX LEAD,Sax Lead,lead,held · buzzy
+FMINI,30,MINI BASS,Mini Bass,bass,held · dark
+FMINI,31,CHAMELEON,Chameleon,bass,plucky · dark
+FMINI,32,SUB BASS,Sub Bass,bass,dark · held
+FMINI,33,WOBBLE BASS,Wobble Bass,bass,held · dark
+FMINI,34,OCTAVE PUMP,Octave Pump,bass,plucky · buzzy
+FMINI,35,SEQ BASS,Seq Bass,bass,plucky · buzzy
+FMINI,36,REESE,Reese,bass,held · dark
+FMINI,37,RUBBER,Rubber,bass,round · plucky
+FMINI,38,FUZZ BASS,Fuzz Bass,bass,buzzy · held
+FMINI,39,WONDER BASS,Wonder Bass,bass,held · dark
+FMINI,40,SOLINA,Solina,pad,slow · buzzy
+FMINI,41,WARM PAD,Warm Pad,pad,warm · slow
+FMINI,42,JUNO PWM,Juno PWM,pad,slow · buzzy
+FMINI,43,CHOIR,Choir,pad,airy · slow
+FMINI,44,SWEEP PAD,Sweep Pad,pad,slow · dark
+FMINI,45,ANGELS,Angels,pad,slow · round
+FMINI,46,ECLIPSE,Eclipse,pad,slow · dark
+FMINI,47,PULSE PAD,Pulse Pad,pad,soft · buzzy
+FMINI,48,CELLOS,Cellos,pad,slow · dark
+FMINI,49,AIR PAD,Air Pad,pad,airy · slow
+FMINI,50,MOOG BRASS,Moog Brass,lead,held · buzzy
+FMINI,51,JUMP BRASS,Jump Brass,lead,soft · buzzy
+FMINI,52,TRUMPET,Trumpet,lead,held · buzzy
+FMINI,53,FRENCH HORN,French Horn,lead,slow · dark
+FMINI,54,BRASS STAB,Brass Stab,lead,punchy · soft
+FMINI,55,BRASS SWELL,Brass Swell,lead,slow · buzzy
+FMINI,56,HORN RIFF,Horn Riff,lead,soft · buzzy
+FMINI,57,TROMBONE,Trombone,lead,held · dark
+FMINI,58,FLUGEL,Flugel,lead,held · buzzy
+FMINI,59,FANFARE,Fanfare,lead,held · buzzy
+FMINI,60,PLUCK SAW,Pluck Saw,arp,buzzy · plucky
+FMINI,61,MARIMBA,Marimba,arp,plucky · buzzy
+FMINI,62,KALIMBA,Kalimba,arp,plucky · buzzy
+FMINI,63,FUNK ARP,Funk Arp,arp,plucky · dark
+FMINI,64,NYLON,Nylon,arp,plucky · round
+FMINI,65,STEELDRUM,Steeldrum,arp,plucky · round
+FMINI,66,8-BIT ARP,8-Bit Arp,arp,punchy · bright
+FMINI,67,PIZZICATO,Pizzicato,arp,plucky · buzzy
+FMINI,68,POP PLUCK,Pop Pluck,arp,plucky · buzzy
+FMINI,69,HARP,Harp,arp,plucky · buzzy
+FMINI,70,CLAVINET,Clavinet,keys,plucky · buzzy
+FMINI,71,PIPE ORGAN,Pipe Organ,keys,held · round
+FMINI,72,SYNTH PIANO,Synth Piano,keys,plucky · buzzy
+FMINI,73,HARPSICHORD,Harpsichord,keys,plucky · buzzy
+FMINI,74,VIBES,Vibes,keys,plucky · buzzy
+FMINI,75,WURLY,Wurly,keys,soft · round
+FMINI,76,TUBULAR,Tubular,keys,plucky · round
+FMINI,77,MUSIC BOX,Music Box,keys,bell · plucky
+FMINI,78,ACCORDION,Accordion,keys,held · buzzy
+FMINI,79,FARFISA,Farfisa,keys,held · buzzy
+FMINI,80,DARK DRONE,Dark Drone,pad,dark · slow
+FMINI,81,STAR DUST,Star Dust,pad,soft · round
+FMINI,82,ALIEN CHOIR,Alien Choir,pad,airy · slow
+FMINI,83,GLASS HARP,Glass Harp,pad,glassy · slow
+FMINI,84,NORTHERN SKY,Northern Sky,pad,slow · buzzy
+FMINI,85,PULSAR,Pulsar,pad,slow · buzzy
+FMINI,86,IRON DRONE,Iron Drone,pad,slow · buzzy
+FMINI,87,GHOST SEQ,Ghost Seq,pad,soft · buzzy
+FMINI,88,HORROR,Horror,pad,slow · buzzy
+FMINI,89,SINGING BOWL,Singing Bowl,pad,soft · round
+FMINI,90,JET SWEEP,Jet Sweep,fx,slow · dark
+FMINI,91,THUNDER,Thunder,fx,soft · dark
+FMINI,92,WIND,Wind,fx,airy · slow
+FMINI,93,SIREN,Siren,fx,held · buzzy
+FMINI,94,TELEPHONE,Telephone,fx,punchy · buzzy
+FMINI,95,POWER UP,Power Up,fx,punchy · buzzy
+FMINI,96,LASER ZAP,Laser Zap,fx,plucky · buzzy
+FMINI,97,HELICOPTER,Helicopter,fx,slow · buzzy
+FMINI,98,ROBOT,Robot,fx,plucky · buzzy
+FMINI,99,CALM SEA,Calm Sea,fx,slow · buzzy
+FMINI,100,SUNRISE,Sunrise,lead,bright · held
+FMINI,101,NIGHT SWIM,Night Swim,pad,dark · slow
+FMINI,102,GLASS ARP,Glass Arp,arp,glassy · plucky
+FMINI,103,I FEEL ARP,I Feel Arp,bass,soft · buzzy
+FMINI,104,VELVET EP,Velvet EP,keys,warm · soft
+FMINI,105,TIN WHISTLE,Tin Whistle,lead,held · buzzy
+FMINI,106,BRASS RISE,Brass Rise,lead,held · buzzy
+FMINI,107,STACCATO,Staccato,arp,plucky · round
+FMINI,108,MONO SYNC,Mono Sync,lead,held · buzzy
+FMINI,109,SOUL KEYS,Soul Keys,keys,soft · round
+FMINI,110,OVERDRIVE,Overdrive,lead,punchy · buzzy
+FMINI,111,MACHINE,Machine,lead,punchy · buzzy
+FMINI,112,SAW WALL,Saw Wall,lead,buzzy · held
+FMINI,113,STRIKE,Strike,lead,punchy · buzzy
+FMINI,114,BIG HOOK,Big Hook,lead,held · buzzy
+FMINI,115,ANGRY BUZZ,Angry Buzz,lead,buzzy · held
+FMINI,116,CRUNCH,Crunch,lead,punchy · buzzy
+FMINI,117,CONTROL,Control,lead,held · buzzy
+FMINI,118,SIREN LEAD,Siren Lead,lead,held · buzzy
+FMINI,119,MOSQUITO,Mosquito,lead,punchy · buzzy
+FMINI,120,MELLOW MAN,Mellow Man,lead,round · slow
+FMINI,121,FLUTE SOFT,Flute Soft,lead,warm · slow
+FMINI,122,HONEY LEAD,Honey Lead,lead,warm · held
+FMINI,123,MOONLIGHT,Moonlight,lead,slow · buzzy
+FMINI,124,SOFT CLAR,Soft Clarinet,lead,warm · slow
+FMINI,125,VOICE OOH,Voice Ooh,lead,slow · buzzy
+FMINI,126,WARM SQR,Warm Square,lead,warm · held
+FMINI,127,SILK PAD LD,Silk Pad Lead,lead,slow · buzzy
+FMINI,128,BELL LEAD,Bell Lead,lead,bell · plucky
+FMINI,129,DREAM FLUTE,Dream Flute,lead,round · slow
+FMINI,130,SUB SINE,Sub Sine,bass,dark · punchy
+FMINI,131,ROUND 808,Round 808,bass,round · plucky
+FMINI,132,RUBBER SUB,Rubber Sub,bass,dark · punchy
+FMINI,133,OCTAVE PLK,Octave Pluck,bass,plucky · buzzy
+FMINI,134,WOBBLE,Wobble,bass,punchy · buzzy
+FMINI,135,STEP BASS,Step Bass,bass,punchy · dark
+FMINI,136,REED BASS,Reed Bass,bass,soft · buzzy
+FMINI,137,TUBE BASS,Tube Bass,bass,soft · buzzy
+FMINI,138,DOUBLE SAW,Double Saw,bass,buzzy · punchy
+FMINI,139,PLUCK BASS,Pluck Bass,bass,plucky · round
+FMINI,140,VELVET PAD,Velvet Pad,pad,warm · slow
+FMINI,141,AURORA,Aurora,pad,slow · buzzy
+FMINI,142,MIST STR,Mist Strings,pad,slow · buzzy
+FMINI,143,SWELL PAD,Swell Pad,pad,slow · buzzy
+FMINI,144,OBOE PAD,Oboe Pad,pad,slow · buzzy
+FMINI,145,CHOIR SOFT,Choir Soft,pad,warm · slow
+FMINI,146,HEAVEN,Heaven,pad,slow · buzzy
+FMINI,147,GLOW PAD,Glow Pad,pad,slow · round
+FMINI,148,MIDNIGHT ST,Midnight Strings,pad,dark · slow
+FMINI,149,BREATHE,Breathe,pad,airy · slow
+FMINI,150,BIG BRASS,Big Brass,lead,held · buzzy
+FMINI,151,MUTE TRP,Mute Trumpet,lead,held · buzzy
+FMINI,152,SAX BRASS,Sax Brass,lead,slow · buzzy
+FMINI,153,STAB 2,Stab 2,lead,punchy · plucky
+FMINI,154,HORN SECT,Horn Section,lead,slow · buzzy
+FMINI,155,SYNTH HORN,Synth Horn,lead,held · buzzy
+FMINI,156,POWER BRS,Power Brass,lead,held · buzzy
+FMINI,157,MUTED HRN,Muted Horn,lead,held · buzzy
+FMINI,158,OCT BRASS,Oct Brass,lead,held · buzzy
+FMINI,159,BRASS DRONE,Brass Drone,lead,slow · buzzy
+FMINI,160,HARP 2,Harp 2,arp,plucky · buzzy
+FMINI,161,KOTO,Koto,arp,plucky · round
+FMINI,162,MARIMBA 2,Marimba 2,arp,plucky · round
+FMINI,163,CLAV FUNK,Clav Funk,arp,plucky · buzzy
+FMINI,164,STEEL PLUCK,Steel Pluck,arp,plucky · buzzy
+FMINI,165,ACOUSTIC,Acoustic,arp,plucky · buzzy
+FMINI,166,TICK PLK,Tick Pluck,arp,plucky · buzzy
+FMINI,167,BANJO,Banjo,arp,plucky · buzzy
+FMINI,168,PLUCK ARP 2,Pluck Arp 2,arp,plucky · buzzy
+FMINI,169,CHIME BOX,Chime Box,arp,bell · plucky
+FMINI,170,CLAV SOFT,Clav Soft,keys,warm · plucky
+FMINI,171,WURLI 2,Wurli 2,keys,plucky · buzzy
+FMINI,172,HARPSI 2,Harpsi 2,keys,plucky · buzzy
+FMINI,173,DRAWBAR,Drawbar,keys,held · round
+FMINI,174,E.PIANO,E.Piano,keys,soft · round
+FMINI,175,ELEC PIANO,Elec Piano,keys,plucky · round
+FMINI,176,MELLOTRON,Mellotron,keys,slow · buzzy
+FMINI,177,MALLET KEY,Mallet Key,keys,plucky · round
+FMINI,178,CHORUS EP,Chorus EP,keys,soft · round
+FMINI,179,HAMMOND,Hammond,keys,held · round
+FMINI,180,DEEP SWELL 2,Deep Swell 2,pad,dark · slow
+FMINI,181,GHOST CHOIR,Ghost Choir,pad,airy · slow
+FMINI,182,PULSE DRONE,Pulse Drone,pad,slow · buzzy
+FMINI,183,OCEAN,Ocean,pad,slow · buzzy
+FMINI,184,STARFIELD,Starfield,pad,slow · buzzy
+FMINI,185,MOTHER,Mother,pad,slow · buzzy
+FMINI,186,FOG BELLS,Fog Bells,pad,bell · slow
+FMINI,187,MACHINE HUM,Machine Hum,pad,slow · buzzy
+FMINI,188,VOID,Void,pad,dark · slow
+FMINI,189,TIDAL,Tidal,pad,slow · buzzy
+FMINI,190,RISER,Riser,fx,slow · buzzy
+FMINI,191,IMPACT,Impact,fx,plucky · dark
+PROPHET,1,It's a Prophet 5,It's a Prophet-5,other,
+PROPHET,2,After Ringer,After Ringer,other,
+PROPHET,3,Forever Keys,Forever Keys,keys,warm
+PROPHET,4,Funk Bass II,Funk Bass II,bass,round
+PROPHET,5,Formant Seraphim,Formant Seraphim,other,
+PROPHET,6,Stabby Brass,Stabby Brass,lead,punchy · bright
+PROPHET,7,No Whining,No Whining,other,
+PROPHET,8,Fantastic Five,Fantastic Five,other,
+PROPHET,9,Velocipeed,Velocipeed,other,
+PROPHET,10,PDG Organ,PDG Organ,keys,warm
+PROPHET,11,Clavicle,Clavicle,keys,warm
+PROPHET,12,Blow by Blow,Blow by Blow,other,
+PROPHET,13,TaariChoir,TaariChoir,other,
+PROPHET,14,Digi-Recorder,Digi-Recorder,other,
+PROPHET,15,Reedy String Pad,Reedy String Pad,pad,wide
+PROPHET,16,Canned Happiness,Canned Happiness,other,
+PROPHET,17,Synchrotrill,Synchrotrill,lead,bright
+PROPHET,18,Born in the 80's,Born in the 80's,other,
+PROPHET,19,Sticky Plucks,Sticky Plucks,arp,plucky
+PROPHET,20,Watery Plucks,Watery Plucks,arp,plucky
+PROPHET,21,Bass Face,Bass Face,bass,round
+PROPHET,22,Antique Bell,Antique Bell,arp,bell · plucky
+PROPHET,23,Whiny Opener,Whiny Opener,other,
+PROPHET,24,Synctink,Synctink,lead,bright
+PROPHET,25,Trembling Organ,Trembling Organ,keys,warm
+PROPHET,26,Sci-Fi Echo,Sci-Fi Echo,other,
+PROPHET,27,Unicorn Dreams,Unicorn Dreams,other,
+PROPHET,28,Cocktail Hour,Cocktail Hour,other,
+PROPHET,29,Nice n Smooth,Nice n Smooth,other,
+PROPHET,30,Tumescent Bass,Tumescent Bass,bass,round
+PROPHET,31,Internalized,Internalized,other,
+PROPHET,32,Blinker Bells,Blinker Bells,arp,bell · plucky
+PROPHET,33,Pickle Pincher,Pickle Pincher,other,
+PROPHET,34,Underwater Trill,Underwater Trill,other,
+PROPHET,35,Fairy Dust,Fairy Dust,other,
+PROPHET,36,The Hats,The Hats,other,
+PROPHET,37,Congo Bongo,Congo Bongo,other,
+PROPHET,38,SurdoTaiko,SurdoTaiko,other,
+PROPHET,39,Punchy Bells,Punchy Bells,arp,bell · plucky
+PROPHET,40,Mindfull,Mindfull,other,
+PROPHET,41,Poly McFat,Poly McFat,other,
+PROPHET,42,Tangerine Chrch Thm,Tangerine Chrch Thm,other,
+PROPHET,43,Reed EP,Reed EP,keys,warm
+PROPHET,44,Cars Strings,Cars Strings,pad,wide
+PROPHET,45,Pipe Organisation,Pipe Organisation,keys,warm
+PROPHET,46,Fat Poly Bass,Fat Poly Bass,bass,round
+PROPHET,47,Choral Voices,Choral Voices,other,
+PROPHET,48,Small Gong,Small Gong,other,
+PROPHET,49,Another Ocean,Another Ocean,other,
+PROPHET,50,Pedaling Sweep,Pedaling Sweep,other,
+PROPHET,51,Hum-Along Solo,Hum-Along Solo,lead,bright
+PROPHET,52,Fat Bass Stack,Fat Bass Stack,bass,round
+PROPHET,53,Afterblow Horn,Afterblow Horn,lead,bright
+PROPHET,54,Midnight PWM,Midnight PWM,other,dark
+PROPHET,55,Hyper Poly,Hyper Poly,other,
+PROPHET,56,Ripples,Ripples,other,
+PROPHET,57,Aggro Synth,Aggro Synth,other,
+PROPHET,58,No Parking Swell,No Parking Swell,pad,wide
+PROPHET,59,Radio Towers,Radio Towers,other,
+PROPHET,60,Harpsi-Vibe,Harpsi-Vibe,arp,plucky
+PROPHET,61,Instability Pad,Instability Pad,pad,wide
+PROPHET,62,Vintage Wurly,Vintage Wurly,keys,warm
+PROPHET,63,Phazy Synth,Phazy Synth,other,
+PROPHET,64,Robot Hamsters,Robot Hamsters,other,
+PROPHET,65,Pressure Points,Pressure Points,other,
+PROPHET,66,80s Horror Strings,80s Horror Strings,pad,wide
+PROPHET,67,NurseryComp,NurseryComp,other,
+PROPHET,68,House Mover,House Mover,other,
+PROPHET,69,Carillons,Carillons,other,
+PROPHET,70,Vocal Pad,Vocal Pad,pad,wide
+PROPHET,71,Soft Moving Brass,Soft Moving Brass,lead,warm · bright
+PROPHET,72,Squarecliff,Squarecliff,other,
+PROPHET,73,J3 808,J3 808,bass,round
+PROPHET,74,CATS MEOW,Cats Meow,other,
+PROPHET,75,Morse Code Lead,Morse Code Lead,lead,bright
+PROPHET,76,DOG,Dog,other,
+PROPHET,77,Under The Ice,Under The Ice,other,glassy
+PROPHET,78,Distant Future,Distant Future,other,
+PROPHET,79,Marimba,Marimba,arp,plucky
+PROPHET,80,Duotone,Duotone,other,
+PROPHET,81,Pulse Pluck,Pulse Pluck,arp,plucky
+PROPHET,82,Unisawyer,Unisawyer,other,
+PROPHET,83,Recorder,Recorder,other,
+PROPHET,84,Hoof Gelatin,Hoof Gelatin,other,
+PROPHET,85,Ghostly Glow,Ghostly Glow,other,
+PROPHET,86,Uptight Bass,Uptight Bass,bass,round
+PROPHET,87,Ravecave,Ravecave,other,
+PROPHET,88,Dirty Lead,Dirty Lead,lead,bright
+PROPHET,89,Celtic Moon,Celtic Moon,other,
+PROPHET,90,Hollow Dreams,Hollow Dreams,other,
+PROPHET,91,Furry Tines,Furry Tines,other,bell
+PROPHET,92,Mouse Blaster,Mouse Blaster,other,
+PROPHET,93,Kyoto,Kyoto,other,
+PROPHET,94,Pink Neon Brass,Pink Neon Brass,lead,bright
+PROPHET,95,Organ Perc,Organ Perc,keys,warm
+PROPHET,96,Skreamer Solo,Skreamer Solo,lead,bright
+PROPHET,97,Dream of Orgonon,Dream of Orgonon,other,
+PROPHET,98,Bistro,Bistro,other,
+PROPHET,99,Impact Bass,Impact Bass,bass,round
+PROPHET,100,Pluck Hollow,Pluck Hollow,arp,plucky
+PROPHET,101,Velo Res Lead 2,Velo Res Lead 2,lead,bright
+PROPHET,102,Soft Brass,Soft Brass,lead,warm · bright
+PROPHET,103,Regal Movement,Regal Movement,other,
+PROPHET,104,Loose Squares,Loose Squares,other,
+PROPHET,105,High Strings,High Strings,pad,wide
+PROPHET,106,Harpsicrud,Harpsicrud,arp,plucky
+PROPHET,107,Rubber Bumper,Rubber Bumper,other,round
+PROPHET,108,Galvanized Bucket,Galvanized Bucket,other,
+PROPHET,109,Soft Swell,Soft Swell,pad,warm · wide
+PROPHET,110,Reverberant Strings,Reverberant Strings,pad,wide
+PROPHET,111,Lagoon Bass,Lagoon Bass,bass,round
+PROPHET,112,Pluckity Duck,Pluckity Duck,arp,plucky
+PROPHET,113,Bell Tree,Bell Tree,arp,bell · plucky
+PROPHET,114,Riser Chord,Riser Chord,other,
+PROPHET,115,Timpanally,Timpanally,other,
+PROPHET,116,Rod Strike,Rod Strike,other,punchy
+PROPHET,117,Tuned Percussion,Tuned Percussion,other,
+PROPHET,118,Mystery Bell,Mystery Bell,arp,bell · plucky
+PROPHET,119,FM Clarinet,FM Clarinet,other,
+PROPHET,120,Funky Rev1 Bells,Funky Rev1 Bells,arp,bell · plucky
+PROPHET,121,Sitarama,Sitarama,other,
+PROPHET,122,FedBack,FedBack,other,
+PROPHET,123,Nylon Fingers,Nylon Fingers,other,
+PROPHET,124,Gamelan,Gamelan,other,
+PROPHET,125,Sparkle Ponies,Sparkle Ponies,other,
+PROPHET,126,Marrakesh Radio C,Marrakesh Radio C,other,
+PROPHET,127,Faint Memories,Faint Memories,other,
+PROPHET,128,Full Hexagon,Full Hexagon,other,
+PROPHET,129,Old String Machine,Old String Machine,pad,wide
+PROPHET,130,Mantel Clock,Mantel Clock,other,
+PROPHET,131,Iconic Brass,Iconic Brass,lead,bright
+PROPHET,132,Sync Swellpad,Sync Swellpad,pad,wide
+PROPHET,133,Pretty Pluck,Pretty Pluck,arp,plucky
+PROPHET,134,House Vibez,House Vibez,other,
+PROPHET,135,Feature My Bass,Feature My Bass,bass,round
+PROPHET,136,ChorusLayer,ChorusLayer,other,
+PROPHET,137,Better Ways,Better Ways,other,
+PROPHET,138,Night Caller,Night Caller,other,dark
+PROPHET,139,Bassment,Bassment,bass,round
+PROPHET,140,After the Denouement,After the Denouement,other,
+PROPHET,141,Rewind,Rewind,other,
+PROPHET,142,Syncwave,Syncwave,lead,bright
+PROPHET,143,Organizer,Organizer,keys,warm
+PROPHET,144,Maneater Ping,Maneater Ping,other,
+PROPHET,145,Leslied,Leslied,other,
+PROPHET,146,Bull By The Horns,Bull By The Horns,lead,bright
+PROPHET,147,Naive Melody,Naive Melody,other,
+PROPHET,148,Poly Morgue,Poly Morgue,other,
+PROPHET,149,Busted and Dusted,Busted and Dusted,other,
+PROPHET,150,Switchback,Switchback,other,
+PROPHET,151,Tight Bass (556?),Tight Bass (556?),bass,round
+PROPHET,152,Pluckyness,Pluckyness,arp,plucky
+PROPHET,153,80s Sci Fi Drop,80s Sci Fi Drop,other,
+PROPHET,154,Catfood,Catfood,other,
+PROPHET,155,Houndstooth,Houndstooth,other,
+PROPHET,156,Cyberian Winds,Cyberian Winds,other,airy
+PROPHET,157,Ominous Bellfall,Ominous Bellfall,arp,bell · plucky
+PROPHET,158,FM Pluck,FM Pluck,arp,plucky
+PROPHET,159,Metal Dronespace,Metal Dronespace,pad,wide
+PROPHET,160,End Credits,End Credits,other,
+PROPHET,161,BRASS,Brass,lead,bright
+PROPHET,162,LOW STRINGS,Low Strings,pad,wide
+PROPHET,163,MUTED CLAVINET,Muted Clavinet,keys,warm
+PROPHET,164,PERCUSSIVE E PIANO,Percussive E Piano,keys,warm
+PROPHET,165,FLUTES,Flutes,lead,round · bright
+PROPHET,166,HARPSICHORD,Harpsichord,arp,plucky
+PROPHET,167,SYNC I,Sync I,lead,bright
+PROPHET,168,PERCUSSIVE ORGAN,Percussive Organ,keys,warm
+PROPHET,169,UNISON GLIDE W RES,Unison Glide W Res,other,
+PROPHET,170,HARMONIUM,Harmonium,other,
+PROPHET,171,ORGAN W RESONANCE,Organ W Resonance,keys,warm
+PROPHET,172,TOY PIANO,Toy Piano,keys,warm
+PROPHET,173,TRUMPET FLUTE,Trumpet Flute,lead,round · bright
+PROPHET,174,FILTER MOD,Filter Mod,other,
+PROPHET,175,REED ORGAN,Reed Organ,keys,warm
+PROPHET,176,BASS IN FIFTHS,Bass in Fifths,bass,round
+PROPHET,177,PIPE ORGAN FLUTES,Pipe Organ Flutes,keys,round · warm
+PROPHET,178,SYNC II,Sync II,lead,bright
+PROPHET,179,ELECTRIC PIANO I,Electric Piano I,keys,warm
+PROPHET,180,HIGH STRINGS,High Strings,pad,wide
+PROPHET,181,OCTAVE SAWTEETH,Octave Sawteeth,other,buzzy
+PROPHET,182,RELEASE REPEAT,Release Repeat,other,
+PROPHET,183,DELAYED HARMONIC,Delayed Harmonic,other,
+PROPHET,184,ECHO REPEAT,Echo Repeat,other,
+PROPHET,185,PULSE WIDTH MOD,Pulse Width Mod,other,
+PROPHET,186,SLOW SYNC SWEEP,Slow Sync Sweep,lead,bright
+PROPHET,187,FOURTHS W RESONANCE,Fourths W Resonance,other,
+PROPHET,188,SWEEPING HARMONICS,Sweeping Harmonics,other,
+PROPHET,189,SLOW SYNC,Slow Sync,lead,bright
+PROPHET,190,RANDOM ARPEGGIATOR,Random Arpeggiator,arp,plucky
+PROPHET,191,SAWTOOTH ARPEGGIATOR,Sawtooth Arpeggiator,arp,buzzy · plucky
+PROPHET,192,CLANGOROUS BELLS,Clangorous Bells,arp,bell · plucky
+PROPHET,193,ALIEN,Alien,other,
+PROPHET,194,NOISE SWEEP,Noise Sweep,other,
+PROPHET,195,DESCENDING BELLS,Descending Bells,arp,bell · plucky
+PROPHET,196,DESCENDING PWM,Descending PWM,other,
+PROPHET,197,HELICOPTER,Helicopter,other,
+PROPHET,198,RESONANCE BELLS,Resonance Bells,arp,bell · plucky
+PROPHET,199,HOLLOW SOUND,Hollow Sound,other,
+PROPHET,200,CAT,Cat,other,
+FM6,0,TINE EP,Tine EP,keys,bell · warm
+FM6,1,BELL,Bell,arp,bell · plucky
+FM6,2,FM BASS,FM Bass,bass,round
+FM6,3,BRASS,Brass,lead,bright
+FM6,4,PAD,Pad,pad,wide
+FM6,5,MARIMBA,Marimba,arp,plucky
+FM6,6,ORGAN,Organ,keys,warm
+FM6,7,PLUCK,Pluck,arp,plucky
+FM6,8,DX TINE,DX Tine,keys,bell · warm
+FM6,9,BRASS SECT,Brass Section,lead,bright
+FM6,10,SOLID BASS,Solid Bass,bass,round
+FM6,11,BELLS,Bells,arp,bell · plucky
+FM6,12,DX MARIMBA,DX Marimba,arp,plucky
+FM6,13,CLAVINET,Clavinet,keys,warm
+FM6,14,DRAWBARS,Drawbars,keys,warm
+FM6,15,STRINGS,Strings,pad,wide
+FM6,16,GLASS PAD,Glass Pad,pad,glassy · wide
+FM6,17,SYNC LEAD,Sync Lead,lead,bright
+FM6,18,HARP,Harp,arp,plucky
+FM6,19,KALIMBA,Kalimba,arp,plucky
+FM6,20,FLUTE,Flute,lead,round · bright
+FM6,21,STEEL DRUM,Steel Drum,arp,plucky
+FM6,22,SAW BASS,Saw Bass,bass,buzzy · round
+FM6,23,TUBULAR,Tubular,arp,plucky
+CZ-1,1,BRASS 1,Brass 1,lead,punchy · bright
+CZ-1,2,BRASS 2,Brass 2,lead,punchy · bright
+CZ-1,3,BRASS 3,Brass 3,lead,punchy · bright
+CZ-1,4,STRINGS 1,Strings 1,pad,wide · punchy
+CZ-1,5,STRINGS 2,Strings 2,pad,wide · punchy
+CZ-1,6,STRINGS 3,Strings 3,pad,wide · punchy
+CZ-1,7,STRINGS 4,Strings 4,pad,wide · punchy
+CZ-1,8,ORCHESTRA,Orchestra,pad,punchy · wide
+CZ-1,9,ACO.GUITAR,Aco.Guitar,arp,punchy · plucky
+CZ-1,10,JAZZ GUITAR,Jazz Guitar,arp,punchy · plucky
+CZ-1,11,ELEC.GUITAR,Elec.Guitar,arp,punchy · plucky
+CZ-1,12,SLAP BASS,Slap Bass,bass,punchy · round
+CZ-1,13,SYNTH.BASS,Synth.Bass,bass,punchy · round
+CZ-1,14,ELEC.BASS 1,Elec.Bass 1,bass,punchy · round
+CZ-1,15,ELEC.BASS 2,Elec.Bass 2,bass,punchy · round
+CZ-1,16,HARP,Harp,arp,punchy · plucky
+CZ-1,17,BRASS 4,Brass 4,lead,punchy · bright
+CZ-1,18,SAXOPHONE,Saxophone,lead,punchy · bright
+CZ-1,19,CELLO,Cello,pad,punchy · wide
+CZ-1,20,FLUTE,Flute,lead,round · punchy
+CZ-1,21,WHISTLE,Whistle,lead,punchy · bright
+CZ-1,22,HARMONICA,Harmonica,lead,punchy · bright
+CZ-1,23,RECORDER,Recorder,lead,punchy · bright
+CZ-1,24,KOTO,Koto,arp,punchy · plucky
+CZ-1,25,PIANO 1,Piano 1,keys,punchy · warm
+CZ-1,26,PIANO 2,Piano 2,keys,punchy · warm
+CZ-1,27,PIANO 3,Piano 3,keys,punchy · warm
+CZ-1,28,ELEC.PIANO,Elec.Piano,keys,punchy · warm
+CZ-1,29,HONKY-TONK,Honky-Tonk,keys,punchy · warm
+CZ-1,30,FUNKY CLAV 1,Funky Clav 1,keys,punchy · warm
+CZ-1,31,FUNKY CLAV 2,Funky Clav 2,keys,punchy · warm
+CZ-1,32,HARPSICHORD,Harpsichord,keys,punchy · warm
+CZ-1,33,JAZZ ORGAN 1,Jazz Organ 1,keys,punchy · warm
+CZ-1,34,JAZZ ORGAN 2,Jazz Organ 2,keys,punchy · warm
+CZ-1,35,PIPE ORGAN 1,Pipe Organ 1,keys,punchy · warm
+CZ-1,36,PIPE ORGAN 2,Pipe Organ 2,keys,punchy · warm
+CZ-1,37,ACCORDION,Accordion,keys,punchy · warm
+CZ-1,38,VOICE 1,Voice 1,pad,punchy · wide
+CZ-1,39,VOICE 2,Voice 2,pad,punchy · wide
+CZ-1,40,VOICE 3,Voice 3,pad,punchy · wide
+CZ-1,41,MUSIC BOX,Music Box,arp,bell · punchy
+CZ-1,42,VIBRAPHONE,Vibraphone,arp,punchy · plucky
+CZ-1,43,XYLOPHONE,Xylophone,arp,punchy · plucky
+CZ-1,44,MARIMBA,Marimba,arp,punchy · plucky
+CZ-1,45,MALLET LOG,Mallet Log,arp,punchy · plucky
+CZ-1,46,AFRO PERC,Afro Perc,other,punchy
+CZ-1,47,BELLS,Bells,arp,bell · punchy
+CZ-1,48,METALLIC,Metallic,arp,punchy · plucky
+CZ-1,49,SYN STRINGS,Syn Strings,pad,wide · punchy
+CZ-1,50,FAT ENSEMBLE,Fat Ensemble,pad,punchy · wide
+CZ-1,51,SITAR,Sitar,arp,punchy · plucky
+CZ-1,52,SYNTH.LEAD 1,Synth.Lead 1,lead,punchy · bright
+CZ-1,53,SYNTH.LEAD 2,Synth.Lead 2,lead,punchy · bright
+CZ-1,54,SYNTH.LEAD 3,Synth.Lead 3,lead,punchy · bright
+CZ-1,55,SYNTH.LEAD 4,Synth.Lead 4,lead,punchy · bright
+CZ-1,56,SWEEP 1,Sweep 1,fx,punchy · airy
+CZ-1,57,SYN DRUMS 1,Syn Drums 1,other,punchy
+CZ-1,58,SYN DRUMS 2,Syn Drums 2,other,punchy
+CZ-1,59,CONGA,Conga,other,punchy
+CZ-1,60,STEEL DRUM,Steel Drum,arp,punchy · plucky
+CZ-1,61,SWEEP 2,Sweep 2,fx,punchy · airy
+CZ-1,62,JET ROAR,Jet Roar,fx,punchy · airy
+CZ-1,63,MOTORCYCLE,Motorcycle,fx,punchy · airy
+CZ-1,64,TYPHOON,Typhoon,fx,punchy · airy
+SID,1,BREADBOX,Breadbox,lead,punchy · bright
+SID,2,RUBBER BASS,Rubber Bass,bass,round · punchy
+SID,3,ARP BASS,Arp Bass,bass,plucky · round
+SID,4,SUB PULSE,Sub Pulse,bass,dark · punchy
+SID,5,SYNC BASS,Sync Bass,bass,punchy · round
+SID,6,SAW BASS,Saw Bass,bass,buzzy · punchy
+SID,7,DIRTY BASS,Dirty Bass,bass,punchy · round
+SID,8,LEAD 6581,Lead 6581,lead,punchy · bright
+SID,9,RING LEAD,Ring Lead,lead,punchy · bright
+SID,10,SYNC LEAD,Sync Lead,lead,punchy · bright
+SID,11,PULSE LEAD,Pulse Lead,lead,punchy · bright
+SID,12,GAME HERO,Game Hero,lead,punchy · bright
+SID,13,LASER LEAD,Laser Lead,lead,punchy · bright
+SID,14,CHIP SOLO,Chip Solo,lead,punchy · bright
+SID,15,8580 LEAD,8580 Lead,lead,punchy · bright
+SID,16,PWM PAD,PWM Pad,pad,slow · wide
+SID,17,SID STRINGS,SID Strings,pad,wide · slow
+SID,18,DREAM CHIP,Dream Chip,pad,slow · wide
+SID,19,8580 PAD,8580 Pad,pad,slow · wide
+SID,20,TRI ORGAN,Tri Organ,keys,punchy · warm
+SID,21,GAME ORGAN,Game Organ,keys,punchy · warm
+SID,22,C64 KEYS,C64 Keys,keys,punchy · warm
+SID,23,SID CLAV,SID Clav,keys,plucky · warm
+SID,24,ARP PLUCK,Arp Pluck,arp,plucky
+SID,25,COIN PLUCK,Coin Pluck,arp,plucky
+SID,26,BELL RING,Bell Ring,arp,bell · plucky
+SID,27,SID BRASS,SID Brass,lead,held · bright
+SID,28,FILTER HIT,Filter Hit,fx,punchy · plucky
+SID,29,LASER FX,Laser FX,fx,plucky · airy
+SID,30,NOISE SWEEP,Noise Sweep,fx,slow · airy
+SID,31,DATA STORM,Data Storm,fx,punchy · airy

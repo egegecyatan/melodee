@@ -2171,6 +2171,7 @@ static void mlearn_poll(void)
 }
 
 #include "ui_designer_input.c"
+static int rt_input(uint32_t *pressed);                /* ui_riff.c */
 static void ui_input(void)
 {
     midi_knobs_poll();
@@ -2190,6 +2191,7 @@ static void ui_input(void)
     if (song_punch_on() && (song_punch_epoch != pattern_epoch || song_punch.row >= chain_config.count))
         pop_close();
     if (scr_input(pressed, notes)) return;
+    if (rt_input(&pressed)) return;                     /* riffton's screens (ui_riff.c) */
     if (designer_on() && !name_on() && !ui.confirm && designer_input(pressed, notes)) return;
     preset_pick_poll();                              /* restore key selection before handling new edges */
     if (notes)

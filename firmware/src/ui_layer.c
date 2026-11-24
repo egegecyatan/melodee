@@ -241,6 +241,7 @@ static void layer_key(uint32_t l, uint32_t k)
         scale_share(TSEL);
     }
 }
+static uint8_t rt_solo_bits;                            /* riffton TRY's solo (ui_riff.c): kept in track_solo too */
 /* each pass: the keys the layer got now; then GLO's solo: the tracks of its keys still held (perform.c) */
 static void layer_keys(uint32_t keys)
 {
@@ -252,7 +253,7 @@ static void layer_keys(uint32_t keys)
     for (k = 0; k < 27u; k++)
         if ((lys.solo >> k) & 1u)
             s |= 1u << (trk_group() + key_place(k));
-    track_solo = (uint8_t)s;
+    track_solo = (uint8_t)(s | rt_solo_bits);
 }
 
 /* KNOB 1..4 in the open layer: its own (GLO levels), else the four of its page */

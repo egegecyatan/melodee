@@ -46,7 +46,8 @@ int main(int argc, char **argv)
     static const uint8_t pd[] = {0x08, 0xf0};
     const aafont_t probe = {1, 1, 'A', 'A', 0, 0, pg, pd, 0, 0, 0};
     double worst = 100;
-    assert(NPALETTES == 8u && !strcmp(UI_PALETTES[0].name, "NIGHT") && !strcmp(UI_PALETTES[1].name, "DAY") &&
+    assert(NPALETTES == 9u && !strcmp(UI_PALETTES[8].name, "riffton") && UI_DEFAULT_INDEX == 8u &&
+           !strcmp(UI_PALETTES[0].name, "NIGHT") && !strcmp(UI_PALETTES[1].name, "DAY") &&
            !strcmp(UI_PALETTES[2].name, "CONTRAST") && !strcmp(UI_PALETTES[3].name, "SUNSET") &&
            !strcmp(UI_PALETTES[4].name, "OCEAN") && !strcmp(UI_PALETTES[5].name, "NEON") &&
            !strcmp(UI_PALETTES[6].name, "CANDY") && !strcmp(UI_PALETTES[7].name, "LO-FI") &&
@@ -138,10 +139,22 @@ int main(int argc, char **argv)
     assert(palette_track(1) && !palette_track(1));             /* (and so does the track: once) */
     cv_begin(3, 1, T_BG); cv_text(0, 0, &probe, "A", T_THEME);
     assert(swap16(cv_px[1]) != night);
-    /* fonts (docs/design README "Large type"): Rubik 500 LB 16, TX 20, VL 28, HR 48 px; Melodee Pixel's faces on the
-     * same line heights and baselines; tabular digits; the ellipsis; HR small letters too */
-    assert(AF_LB.h == 19 && AF_LB.asc == 15 && AF_TX.h == 24 && AF_TX.asc == 19 && AF_VL.h == 34 && AF_VL.asc == 27 &&
-           AF_HR.h == 57 && AF_HR.asc == 45);
+    /* fonts: riffton's Space Grotesk tokens (tools/gen_aa_font.py RIFFTON_TYPE), Melodee's roles on them: LB the 9 px
+     * M, TX the 10 px V, VL the 13 px L, HR the 15 px XL; Melodee Pixel's faces on the same line heights and
+     * baselines; tabular digits; the ellipsis; HR small letters too */
+    assert(AF_LB.h == 12 && AF_LB.asc == 9 && AF_TX.h == 13 && AF_TX.asc == 10 && AF_VL.h == 17 && AF_VL.asc == 13 &&
+           AF_HR.h == 20 && AF_HR.asc == 15);
+    {   /* (the riffton brief: every size names and values use has both cases and # b / deg middle-dot %; ▶ is drawn) */
+        static const aafont_t *const RT[] = {&AF_XS, &AF_XSB, &AF_S, &AF_SB, &AF_M, &AF_MB, &AF_V, &AF_VB, &AF_H, &AF_L,
+                                             &AF_XL};
+        static const uint8_t NEED[] = {'#', 'b', '/', '%', 0xB0, 0xB7, 0x86};
+        for (unsigned f = 0; f < sizeof RT / sizeof RT[0]; f++) {
+            for (unsigned c = 'A'; c <= 'z'; c++)
+                assert(glyph_at(RT[f], c) >= 0);
+            for (unsigned c = 0; c < sizeof NEED; c++)
+                assert(glyph_at(RT[f], NEED[c]) >= 0 && glyph(RT[f], NEED[c]) != glyph(RT[f], '?'));
+        }
+    }
     assert(AP_LB.h == AF_LB.h && AP_LB.asc == AF_LB.asc && AP_TX.h == AF_TX.h && AP_TX.asc == AF_TX.asc &&
            AP_VL.h == AF_VL.h && AP_VL.asc == AF_VL.asc && AP_HR.h == AF_HR.h && AP_HR.asc == AF_HR.asc);
     assert(text_w(&AF_LB, "0000") == text_w(&AF_LB, "1111") && text_w(&AF_VL, "0000") == text_w(&AF_VL, "1111"));

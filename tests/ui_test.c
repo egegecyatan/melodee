@@ -107,6 +107,7 @@ static struct { uint32_t stage; } melodee_dbg;
 #include "../firmware/src/ui_menu.c"
 #include "../firmware/src/ui_input.c"
 #include "../firmware/src/ui_layer.c"
+#include "../firmware/src/ui_riff.c"
 #include "../firmware/src/upreset.c"
 #include "../firmware/src/project.c"
 #include "../firmware/src/fm6_store.c"
@@ -1745,12 +1746,12 @@ static int test_display_preferences(void)
     {
         int steps_ok = settings.palette == 2;
         for (uint32_t k = 3; k < NPALETTES; k++) { turn(EN_K1, 1); steps_ok &= settings.palette == k; }
-        bad += check("COLOR KNOB 1 steps on through SUNSET .. LO-FI, then wraps to NIGHT",
-                     steps_ok && (turn(EN_K1, 1), settings.palette == UI_DEFAULT_INDEX));
+        bad += check("COLOR KNOB 1 steps on through SUNSET .. LO-FI, riffton, then wraps to NIGHT",
+                     steps_ok && (turn(EN_K1, 1), settings.palette == 0u));
     }
     press(B_OCTDN);
     bad += check("OCT- leaves display preferences without changing musical state",
-                 !ui.menu && settings.palette == UI_DEFAULT_INDEX && !memcmp(sounds, trk, sizeof sounds));
+                 !ui.menu && settings.palette == 0u && !memcmp(sounds, trk, sizeof sounds));   /* (NIGHT, as left) */
     return bad;
 }
 
@@ -1934,7 +1935,7 @@ static int test_roll(void)
 {
     int bad = 0, ok;
     uint32_t k, n, e, id;
-    int32_t up, down, st;
+    int32_t up, down, st, st7;
     static const struct { const char *a, *b; int d; } DIRS[] = {
         {"120", "121", 1}, {"121", "120", -1}, {"129", "130", 1}, {"-12", "-13", -1}, {"-13", "-12", 1}, {"+5", "+6", 1},
         {"1.25", "1.30", 1}, {"0.9", "0.8", -1}, {"9", "10", 0}, {"0", "-1", 0}, {"+5", "-5", 0}, {"C3", "C4", 0},
@@ -2022,9 +2023,15 @@ static int test_roll(void)
     up = roll_ink_row(host_screen, ring_vx(3), ring_vx(3) + 11, VY, VY + ROLL_H);
     ok = ui.roll[3].dir == 1;
     ui_power_on(); song.g[G_TUNE] = 7; roll_settle();
+    st7 = roll_ink_row(host_screen, ring_vx(3), ring_vx(3) + 11, VY, VY + ROLL_H);   /* (each roll against its own
+                                                                                    * digit: at riffton's 13 px the digits'
+                                                                                    * shapes differ by more than a pixel) */
     turn(EN_K4, -1); frame(); frame(); frame();
     down = roll_ink_row(host_screen, ring_vx(3), ring_vx(3) + 11, VY, VY + ROLL_H);
-    ok &= ui.roll[3].dir == -1 && st > 0 && up > st + 16 && down < st - 16;
+    /* (the direction: the roll's own; the ink moves at least a pixel each way. Rubik's 28 px digits were clipped by the
+     * 24 px window, so the ink's centre followed the incoming digit; riffton's 13 px digits fit it whole) */
+    ok &= ui.roll[3].dir == -1 && st > 0 && st7 > 0 && (up - st >= 16 || st - up >= 16) &&
+          (down - st7 >= 16 || st7 - down >= 16);
     ui_power_on(); song.g[G_TUNE] = -5; roll_settle();
     turn(EN_K4, -1);
     ok &= song.g[G_TUNE] == -6 && str_eq(ui.roll[3].from, "-5") && ui.roll[3].dir == -1;

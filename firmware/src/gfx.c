@@ -45,6 +45,23 @@ static uint32_t ty_pixel(void);
 #define TY_TX (ty_pixel() ? &AP_TX : &AF_TX)  /* names, rows, the header, text: 20 px, pixel 2 x */
 #define TY_VL (ty_pixel() ? &AP_VL : &AF_VL)  /* values: 28 px, pixel 3 x */
 #define TY_HR (ty_pixel() ? &AP_HR : &AF_HR)  /* the hero (the chord, a sound's name alone): 48 px, pixel 5 x */
+/* riffton's type tokens (tools/gen_aa_font.py RIFFTON_TYPE; ui_riff.c): Space Grotesk 500 / 700. Text at 8 px and
+ * below follows Settings > FONT (Melodee Pixel at 1 x when it says PIXEL); without the resource region every token is
+ * pixel (ty_pixel) */
+#define RT_SMALL(n) (ty_pixel() ? &AP_##n : &AF_##n)
+#define RT_BIG(n, pix) (RES_OK() ? &AF_##n : &AP_##pix)
+#define RT_XS RT_SMALL(XS)        /* 7 px: knob labels, tags, hints, credits */
+#define RT_XSB RT_SMALL(XSB)
+#define RT_S RT_SMALL(S)          /* 8 px: neighbours, chips, hints */
+#define RT_SB RT_SMALL(SB)
+#define RT_M RT_BIG(M, LB)        /* 9 px: context, chords, modes */
+#define RT_MB RT_BIG(MB, LB)      /* 9 px bold: role labels, riff names */
+#define RT_V RT_BIG(V, TX)        /* 10 px: values, sound names */
+#define RT_VB RT_BIG(VB, TX)
+#define RT_H RT_BIG(H, TX)        /* 11 px bold: screen titles */
+#define RT_L RT_BIG(L, VL)        /* 13 px: macro values */
+#define RT_XL RT_BIG(XL, HR)      /* 15 px bold: chord symbols */
+#define RT_W RT_BIG(W, HR)        /* 40 px bold: the wordmark */
 
 /* host tests hook in here (layout lint, draw cost); nothing in the firmware */
 #ifndef GFX_HOOK_TEXT

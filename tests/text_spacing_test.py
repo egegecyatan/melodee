@@ -35,7 +35,11 @@ LOWER = ["oeo", "coco", "eco", "nono", "minimum", "hello", "level", "decay", "re
 UPPER = ["CUTOFF", "RESO", "LEVEL", "DECAY", "RELEASE", "SOUND", "OCOE", "COCO", "NONO", "MINIMUM", "SUPER SAW",
          "MELODEE", "PRESETS", "ANALOG", "DIGITAL", "PITCH", "SWING", "AV AW LT TA YO"]
 RULE = ["gfx"]   # "gfx": src/gfx.c cv_text; "rounded": the earlier rule (each glyph at the rounded pen, 1 phase)
-LIMIT = {"LB": 0.51, "TX": 0.51, "VL": 1.01, "HR": 1.01}   # a phase step (VL, HR: one phase, a pixel), plus raster noise
+# a phase step plus raster noise: two phases half a pixel, one a pixel. The noise of a 16 x supersampled reference
+# grows as the face gets smaller: riffton's 7 .. 15 px faces allow 0.06 px (Rubik's 16 .. 48 px allowed 0.01)
+NOISE = 0.06
+LIMIT = {}
+LIMIT_ONE = 1.0 + NOISE
 RES = r"(?: MELODEE_RES)?"   # (tables in the resource region, res.c, carry the section attribute)
 
 
@@ -180,7 +184,7 @@ def main():
     a = ap.parse_args()
     RULE[0] = a.rule
     faces = parse(a.header)
-    spec = {n: (font, px) for n, font, px, *_ in gf.preset("rubik")}
+    spec = {n: (font, px) for n, font, px, *_ in gf.preset("riffton")}   # (riffton's tokens, Space Grotesk)
     bad = 0
     for name, f in faces.items():
         font, px = spec[name]
@@ -189,14 +193,17 @@ def main():
         # a sparse face (HR): the words it can draw (the firmware draws no others in it)
         words = [w for w in words if all(glyph_at(f, ord(ch.upper())) is not None for ch in w)]
         pairs = [p for s in words for p in measure(f, font_hi, s)]
+        if not pairs:                         # (the wordmark: its own letters, no specimen word)
+            continue
         e = sorted(pairs, key=lambda p: -abs(p[1]))
         mx = abs(e[0][1])
         rms = (sum(v * v for _, v in pairs) / len(pairs)) ** 0.5
-        over = sum(abs(v) > LIMIT[name] for _, v in pairs)
-        ok = mx <= LIMIT[name] + 1e-9
+        lim = LIMIT.get(name, 0.5 + NOISE if faces[name]["psh"] else LIMIT_ONE)
+        over = sum(abs(v) > lim for _, v in pairs)
+        ok = mx <= lim + 1e-9
         bad += not ok
         print(f"  {name} {px}px x{1 << f['psh']} phases: {len(pairs)} pairs, gap error max {mx:.3f} px, rms {rms:.3f} px, "
-              f"{over} over {LIMIT[name]} px {'ok' if ok else 'FAIL'}")
+              f"{over} over {lim} px {'ok' if ok else 'FAIL'}")
         print("    worst: " + ", ".join(f"{p!r} {v:+.2f}" for p, v in e[:10]))
         if a.png:
             Path(a.png).mkdir(parents=True, exist_ok=True)

@@ -91,7 +91,8 @@ PY="${PYTHON:-python3}"                           # (as build.sh: the Python wit
 OUT=build/host
 LOG=$OUT/log
 CC="${CC:-cc} -O1 -ffp-contract=off -Wall -Wno-unused-function"
-FW="-w -Ibuild/gen -Ifirmware/src"
+FW="-w -Ibuild/gen -Ifirmware/src -DRIFFTON_HOST_MELODEE=1"   # (Melodee's home and power-on sounds: its own tests)
+RT="-URIFFTON_HOST_MELODEE -DRIFFTON_HOST_MELODEE=0"            # riffton's tests: its screens and roles
 P5=build/prophet5/Prophet-5+10-Factory-Programs-ReadMe1.03
 SOUND=${SOUND:-1}
 PARALLEL=${PARALLEL:-$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)}
@@ -199,11 +200,11 @@ powercut_tests() {
         build/host/boot-fixtures/old-stub.fwsc
 }
 ui_renders() {
-    build ui_render ui_render -O1 -w -DMELODEE_USB_AUDIO=1 -DMELODEE_USB_HOST=1 -Ibuild/gen -Ifirmware/src -Itests || return
+    build ui_render ui_render -O1 -w -DMELODEE_USB_AUDIO=1 -DMELODEE_USB_HOST=1 -DRIFFTON_HOST_MELODEE=1 -Ibuild/gen -Ifirmware/src -Itests || return
     mkdir -p build/ui_new/ppm build/ui_slot
     step "UI renders: layout lint (every screen and palette, every page, engine and column value), MONO gray, draw cost" \
         "$OUT/ui_render" build/ui_new build/ui_slot
-    build ui_render_whole ui_render -O1 -w -DMELODEE_USB_AUDIO=1 -DMELODEE_USB_HOST=1 -DMELODEE_CANVAS_ROWS=124 \
+    build ui_render_whole ui_render -O1 -w -DMELODEE_USB_AUDIO=1 -DMELODEE_USB_HOST=1 -DRIFFTON_HOST_MELODEE=1 -DMELODEE_CANVAS_ROWS=124 \
         -Ibuild/gen -Ifirmware/src -Itests || return
     # Fresh reference images avoid stale names from earlier versions; ui_new
     # also contains generated manual assets which this check need not remove.
@@ -394,7 +395,7 @@ if core && [ $TABLES = 1 ]; then
     t "themes: contrast, text blending and font metrics" theme_test -O1 $FW
     t "text: pens, kerning and pixels equal the reference renderer" text_ref_test -O1 $FW
     if [ $PIL = 1 ]; then
-        run "text spacing: glyph gaps against the font's own (16x supersampled), S M <= 0.25 px, L <= 0.5 px" \
+        run "text spacing: glyph gaps against the font's own (16x supersampled), a phase step + 0.06 px" \
             "$PY" tests/text_spacing_test.py build/gen/ui_fonts.h
     fi
     t "settings: PER5 records, palette ids and preference preservation" settings_test -O1 -w -Ibuild/gen
@@ -475,6 +476,8 @@ if sound && [ $TABLES = 1 ]; then
         -DMELODEE_LEGACY_EXTRAS=1 -O2 $FW
     t "SID: oscillator/LFSR/register semantics, revisions and 32 factory presets" sid_test -O2 $FW
     t "FMINI: engine 22, SLOT patches, every preset heard and bounded, corners, voices, chords, cost" fmini_test -O2 $FW
+    t "riffton: power-on roles, Title Case names, RIFF and TRY controls, A/B, solo, swaps while looping" riffton_test -O1 \
+        $FW $RT
     job phys_ref
     t "DRUM: 808 instruments, velocity, hat choke, release, eight lanes and shared voice budget" drum_test -O2 $FW -- \
         "$OUT/drum_test" build/drum_demo

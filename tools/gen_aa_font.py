@@ -44,7 +44,7 @@ import aa_raster as ar  # noqa: E402
 
 FONTS = Path(__file__).resolve().parents[1] / "fonts"
 EXTRAS = [0xA9, 0xB0, 0xB7, 0xC4, 0xD6, 0xDC, 0xE4, 0xF6, 0xFC, 0x2026]  # (c) deg . A: O: U: a: o: u: (Latin-1), ...
-CODE = {0x2026: 0x85}                  # characters outside Latin-1 -> their one-byte code in the firmware
+CODE = {0x2026: 0x85, 0x221E: 0x86}    # characters outside Latin-1 -> their one-byte code in the firmware (... and infinity)
 PHASES = 2                             # horizontal phases per glyph (aa_raster.raster_font): LB and TX
 LEVELS = [4]                           # alpha steps kept of the 16 (--levels)
 KERN_PX = 28                           # the shared kerning's size (VL's: exact there, within 1/16 px at 16 / 20 px)
@@ -57,7 +57,31 @@ HR_CHARS = " #'()+./-_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv
 PIXEL = Path(__file__).resolve().parents[1] / "assets" / "fonts" / "melodee_pixel.txt"
 
 
+# riffton's type tokens (docs/design/README.md "riffton type"): (name, weight, px). Every size of the riffton designs
+# rounds up to one of these (6.5 -> 7, 7.5 -> 8, 8.5 -> 9, 9.5 -> 10); Regular (400) is set in Medium (500). Change a
+# px here to scale a token everywhere. Full ASCII plus the extras on every face (names and values need # b / deg %).
+RIFFTON_TYPE = [("XS", 500, 7), ("XSB", 700, 7), ("S", 500, 8), ("SB", 700, 8), ("M", 500, 9), ("MB", 700, 9),
+                ("V", 500, 10), ("VB", 700, 10), ("H", 700, 11), ("L", 500, 13), ("XL", 700, 15)]
+RIFFTON_WORD = ("W", 700, 40, "riffton")             # the wordmark (boot): its letters alone
+# Melodee's four roles (the deep pages, TY_*) set in riffton's faces
+RIFFTON_ROLES = {"LB": "M", "TX": "V", "VL": "L", "HR": "XL"}
+
+
 def preset(name):
+    if name == "riffton":
+        v = str(FONTS.parent / "assets" / "fonts" / "SpaceGrotesk[wght].ttf")    # SIL OFL 1.1, Google Fonts
+        # two phases (half-pixel pens) for the Medium faces up to 10 px, the labels and values where a pixel of
+        # spacing shows; one for the rest (the bold faces take the Medium's kerning: a phase gains them less)
+        faces = [(n, f"{v}@{w}", px, (32, 126), EXTRAS + [0x221E], -0.0, PHASES if px <= 10 and w == 500 else 1)
+                 for n, w, px in RIFFTON_TYPE]
+        n, w, px, word = RIFFTON_WORD
+        faces.append((n, f"{v}@{w}", px, (32, 32), sorted({ord(c) for c in word}), -0.03, 1))
+        # Melodee Pixel at 1 x for the small tokens (Settings > FONT: the face of text at 8 px and below), and for
+        # the deep pages' roles on their riffton faces' lines
+        pix = [("XS", 1, 0), ("XSB", 1, 0), ("S", 1, 0), ("SB", 1, 0)] + \
+              [(r, 2 if r == "HR" else 1, 0) for r in RIFFTON_ROLES]
+        faces.append(("PIX", str(PIXEL), 0, (32, 126), EXTRAS, None, 1, pix))
+        return faces
     if name == "rubik":
         v = str(FONTS.parent / "assets" / "fonts" / "Rubik[wght].ttf")       # SIL OFL 1.1, Google Fonts
         return [("LB", v + "@500", 16, (32, 126), EXTRAS, 0.0, PHASES),             # the large type's roles
@@ -176,11 +200,11 @@ def quantise(b, n):
     return ar.pack(q)
 
 
-def shared_kern(faces, kern_min):
+def shared_kern(faces, kern_min, sfx=""):
     """the kerning of every face as one table (KERN_PX): (C text, {ch: left class}, {ch: right class}, right classes,
     the order of AF_KL / AF_KR, bytes)"""
     fonts = {f[1] for f in faces}
-    assert len(fonts) == 1, "one kerning table: every face of one font and weight"
+    assert len(fonts) == 1, "one kerning table: every face of one font and weight (main: a table per weight)"
     order = []
     for f in sorted(faces, key=lambda f: -(f[3][1] - f[3][0] + 1 + len(f[4]))):
         for c in [chr(c) for c in range(f[3][0], f[3][1] + 1)] + [chr(c) for c in f[4]]:
@@ -206,10 +230,10 @@ def shared_kern(faces, kern_min):
             assert got == pairs.get((a, b), 0), f"kerning classes lose {a!r}{b!r}"
     assert all(-128 <= d < 128 for d in km)
     text = "\n".join([f"/* kerning: {len(pairs)} pairs at {KERN_PX} px in 1/16 px, {len(rows)} x {len(cols)} classes */",
-                      ar.c_array("AF_KM", "int8_t", km, 24, attr="MELODEE_RES"),
-                      ar.c_array("AF_KL", "uint8_t", [lc.get(c, 0) for c in order], 24),
-                      ar.c_array("AF_KR", "uint8_t", [rc.get(c, 0) for c in order], 24)]) + "\n"
-    return text, lc, rc, len(cols), order, len(km) + 2 * len(order), len(pairs)
+                      ar.c_array("AF_KM" + sfx, "int8_t", km, 24, attr="MELODEE_RES"),
+                      ar.c_array("AF_KL" + sfx, "uint8_t", [lc.get(c, 0) for c in order], 24),
+                      ar.c_array("AF_KR" + sfx, "uint8_t", [rc.get(c, 0) for c in order], 24)]) + "\n"
+    return text, lc, rc, len(cols), order, len(km) + 2 * len(order), len(pairs), sfx
 
 
 def emit(face, tracking, gamma, kern):
@@ -273,7 +297,8 @@ def emit(face, tracking, gamma, kern):
         lines.append(ar.c_array(f"AF_{name}_KR", "uint8_t", kr, 24))
     ex = ", ".join(str(CODE.get(c, c)) for c in extras) or "0"
     lines.append(f"static const uint8_t AF_{name}_EX[{max(1, len(extras))}] = {{{ex}}};")
-    kt = (f"AF_{name}_KL, AF_{name}_KR, AF_KM" if own else "AF_KL, AF_KR, AF_KM") if kern else "0, 0, 0"
+    ks = kern[6] if kern else ""                       # (the weight's table: AF_KM, AF_KM_W700 ..)
+    kt = (f"AF_{name}_KL, AF_{name}_KR, AF_KM{ks}" if own else f"AF_KL{ks}, AF_KR{ks}, AF_KM{ks}") if kern else "0, 0, 0"
     lines.append(f"static const aafont_t AF_{name} = {{{r['h']}, {r['asc']}, {first}, {last}, {len(extras)}, "
                  f"{kern[2] if kern else 0}, AF_{name}_G, AF_{name}_DATA, {kt}, AF_{name}_EX, {psh}, "
                  f"{'AF_%s_HC' % name if hc else '0'}, {cap_px(font, px)}, 0, {round(px * 256 / KERN_PX)}}};")
@@ -281,7 +306,7 @@ def emit(face, tracking, gamma, kern):
     pairs = [(a, b) for a in chars for b in chars if kern and a in kern[0] and b in kern[1]]
     cost = {"data": len(data) + len(hc), "glyph_table": 8 * len(table), "kern": kbytes, "extras": len(extras),
             "glyphs": len(chars), "phases": phases, "pairs": len(pairs), "h": r["h"], "asc": r["asc"], "px": px,
-            "font": os.path.basename(font.split("#")[0]), "adv_digit": r["glyphs"]["0"][0] / 16}
+            "font": os.path.basename(font.split("#")[0]), "adv_digit": r["glyphs"].get("0", (0,))[0] / 16}
     cost["total"] = cost["data"] + cost["glyph_table"] + cost["kern"] + cost["extras"]
     return "\n".join(lines) + "\n", cost
 
@@ -362,30 +387,36 @@ def emit_pixel(face, metrics):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("out")
-    ap.add_argument("--preset", choices=["rubik"])
+    ap.add_argument("--preset", choices=["rubik", "riffton"])
     ap.add_argument("--face", action="append", default=[])
     ap.add_argument("--tracking", type=float, default=0.0, help="extra advance per glyph in em")
     ap.add_argument("--gamma", type=float, default=1.0, help="coverage curve; <1 thickens light-on-dark text")
     ap.add_argument("--kern-min", type=int, default=1, help="smallest kerning pair kept, in 1/16 px (0 pairs = no kerning)")
     ap.add_argument("--huff", default=",".join(HUFF[0]), help="faces stored Huffman-coded (comma list, '' = none)")
     ap.add_argument("--levels", type=int, default=LEVELS[0], help="alpha steps kept (2..16)")
+    ap.set_defaults(huff=None)
     a = ap.parse_args()
+    if a.huff is None:                         # riffton: every face Huffman-coded
+        a.huff = ",".join(n for n, _, _ in RIFFTON_TYPE) + "," + RIFFTON_WORD[0] if a.preset == "riffton" else ",".join(HUFF[0])
     HUFF[0] = tuple(x for x in a.huff.split(",") if x)
     LEVELS[0] = max(2, min(16, a.levels))
     faces = ([parse_face(s) for s in a.face] if a.face else []) or (preset(a.preset) if a.preset else None)
     if not faces:
         ap.error("--preset or --face is required")
-    out = ["/* generated by tools/gen_aa_font.py: 4-bit alpha glyphs (Rubik, SIL OFL 1.1; Melodee Pixel; see "
-           "assets/fonts) */",
+    out = ["/* generated by tools/gen_aa_font.py: 4-bit alpha glyphs ("
+           + ("Space Grotesk" if a.preset == "riffton" else "Rubik") + ", SIL OFL 1.1; Melodee Pixel; see assets/fonts) */",
            "#pragma once", "#include <stdint.h>",
            "#ifndef MELODEE_RES", "#define MELODEE_RES  /* melodee.c: the resource region (res.c) */", "#endif", ""]
-    total, metrics, kern = 0, {}, None
+    total, metrics, kern, kerns = 0, {}, None, {}
     aa = [f for f in faces if f[0] != "PIX"]
-    if aa and a.kern_min:
-        text, *kern = shared_kern(aa, a.kern_min)
-        out.append(text)
-        total += kern[4]
-        print(f"kerning: {kern[5]} pairs at {KERN_PX} px, shared = {kern[4]} B")
+    if aa and a.kern_min:                      # a kerning table per font and weight (Rubik: one; riffton: 500, 700)
+        for i, fnt in enumerate(dict.fromkeys(f[1] for f in aa)):
+            text, *k = shared_kern([f for f in aa if f[1] == fnt], a.kern_min,
+                                   "" if not i else "_W" + fnt.rsplit("@", 1)[-1])
+            out.append(text)
+            total += k[4]
+            kerns[fnt] = k
+            print(f"kerning{k[6]}: {k[5]} pairs at {KERN_PX} px, shared = {k[4]} B")
     for f in faces:
         if f[0] == "PIX":
             text, cost, n = emit_pixel(f, metrics)
@@ -393,8 +424,13 @@ def main():
             total += cost
             print(f"face PIX: {os.path.basename(f[1])} {n} glyphs, 1 bit, roles {[r[:2] for r in f[7]]} = {cost} B")
             continue
-        text, c = emit(f, a.tracking, a.gamma, kern)
+        text, c = emit(f, a.tracking, a.gamma, kerns.get(f[1]))
         metrics[f[0]] = (c["h"], c["asc"])
+        if a.preset == "riffton":                 # Melodee's roles on riffton's faces: the same lines, aliases
+            for role, tok in RIFFTON_ROLES.items():
+                if tok == f[0]:
+                    metrics[role] = metrics[tok]
+                    text += f"#define AF_{role} AF_{tok}   /* Melodee's TY_{role} */\n"
         out.append(text)
         total += c["total"]
         print(f"face {f[0]}: {c['font']} {c['px']}px h{c['h']} base{c['asc']}  {c['glyphs']} glyphs x {c['phases']}  "

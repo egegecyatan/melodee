@@ -851,6 +851,7 @@ static void project_autosave(void)
     project_quick_save();
 }
 static void project_cur_name(char *b) { str_cpy(b, proj_name, PROJ_NAME_LEN + 1u); }   /* b: 13 bytes */
+static uint32_t project_cur_slot(void) { return proj_cur; }   /* (ui_riff.c: RIFF 07) PROJ_NO_SLOT none */
 
 /* slot's name -> b (PROJ_NAME_LEN + 1 bytes); 0 = an empty slot (b ""). Uses proj_scratch */
 static int project_old(uint32_t slot) { return !project_used(slot) && proj_meta[slot % PROJ_SLOTS].old; }
