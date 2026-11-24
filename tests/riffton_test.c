@@ -4,7 +4,8 @@
  * RIFFTON_HOST_MELODEE: riffton's power-on sounds and screens.
  * 1. power-on: the four roles' sounds (engines.c TRK_DEF_RT), RIFF is the home, the boot screen's words.
  * 2. names: every sound TRY offers has a Title Case display name and a role; each role's list holds only its sounds.
- * 3. RIFF: ALGORITHM / K1 select the layer, K2 swaps its sound (the role's list), K4 its level; OCT stays the octave.
+ * 3. RIFF: ALGORITHM / K1 select the layer, K2 swaps its sound (the role's list), K4 its level; OCT stays the octave;
+ *    HOME held is Melodee's menu (FONT: GROTESK or PIXEL).
  * 4. TRY: PRESETS opens it; knob n swaps role n's sound once the knob rests; SELECT is A/B, OCT+ keeps B, ALGORITHM
  *    solos a role, OCT- goes back (solo off); OCT never moves the octave there.
  * 5. a swap while the riff loops leaves the other roles' sounding voices alone, and the mix keeps sounding. */
@@ -121,6 +122,14 @@ static void test_riff(void)
     press(B_OCTUP);
     rcheck("RIFF: OCT+ is still the keyboard's octave (no screen to enter)", song.octave == oct + 1);
     press(B_OCTDN);
+    hold(B_HOME);
+    rcheck("RIFF: HOME held opens the menu (Settings: COLOR, FONT ..)", ui.menu != 0);
+    ui.menu_sel = MI_FONT;
+    turn(EN_K1, 1);
+    rcheck("menu: FONT turns to PIXEL (riffton's small text in Melodee Pixel)", ty_pixel() != 0);
+    turn(EN_K1, -1);
+    press(B_OCTDN);
+    rcheck("menu: back to RIFF, GROTESK again", !ui.menu && rt_shown() && !ty_pixel());
 }
 
 static void test_try(void)
