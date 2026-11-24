@@ -180,6 +180,7 @@ static void melodee_init(void)
     undo_depth++;                             /* (no undo copy of the power-on loads) */
     fm6_init();                               /* every track's FM6 patch: the init voice */
     cz_init();
+    fmini_init();                             /* every part's FMINI patch, the noise seeds */
     for (i = 0; i < NTRK; i++) {
         track_t *t = &trk[i];
         track_defaults(t);
@@ -400,6 +401,7 @@ static void fm1_main(void)
         melodee_dbg.stage = 1;
         ui_input();
         glo_poll();                                     /* a kept GLO value changed: the settings, later */
+        fmini_poll();                                   /* FMINI: a turned SLOT loads its patch */
 #if MELODEE_BLE
         ble_boot_poll();
         mel_ble_poll();

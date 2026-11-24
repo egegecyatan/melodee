@@ -474,6 +474,7 @@ if sound && [ $TABLES = 1 ]; then
     t "CZ: oscillator boundaries, native rate/target envelopes and independent lines" phase_test \
         -DMELODEE_LEGACY_EXTRAS=1 -O2 $FW
     t "SID: oscillator/LFSR/register semantics, revisions and 32 factory presets" sid_test -O2 $FW
+    t "FMINI: engine 22, SLOT patches, every preset heard and bounded, corners, voices, chords, cost" fmini_test -O2 $FW
     job phys_ref
     t "DRUM: 808 instruments, velocity, hat choke, release, eight lanes and shared voice budget" drum_test -O2 $FW -- \
         "$OUT/drum_test" build/drum_demo

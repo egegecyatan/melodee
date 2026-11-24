@@ -1060,6 +1060,7 @@ static void apply_preset_to(track_t *t, uint32_t pi)
     cz_factory_loaded(t);
     cz_track_accept(t);
     fm6_track_loaded(t);                              /* FM6: the preset's patch */
+    fmini_track_loaded(t);                            /* FMINI: the SLOT's patch, the preset's LFO */
     load_end(t);
 }
 

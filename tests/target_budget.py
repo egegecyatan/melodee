@@ -31,6 +31,7 @@ FUNCS = ["phase_render", "sid_render", "cz_native_render", "cz_native_wave", "fo
          "fx_tape",                                        # fused, smoothed stereo Tape path
          "fx_chorus",                                      # full-rate integer stereo taps
          "mix_extra_sends", "fx_bus_kernel",                # optional independent sends and returns
+         "fmini_render", "fmini_wave", "fmini_block",      # FMINI (eng_fmini.c): the ladder, the oscillators, the part's noise
          ]
 OPTIONAL = {}                   # built only with an option, not in BUDGET: absent, skipped; present, checked against these
 # The FM6 operator kernel may be extracted from its renderer. Keep the original

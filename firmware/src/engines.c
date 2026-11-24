@@ -22,6 +22,7 @@
 #include "eng_noise.c"
 #endif
 #include "eng_fm6.c"            /* FM6: 6-operator FM rendered as Dexed renders it (fm6_core.c) */
+#include "eng_fmini.c"          /* FMINI: FMini-1's three oscillators and ladder filter */
 #include "eng_midi.c"
 #if MELODEE_SLICE
 #include "eng_slice.c"
@@ -66,6 +67,7 @@ static uint32_t eng_state_size(uint32_t e)
     case 3: return sizeof(sid_part_t);              /* SID (eng_sid.c) */
     case ENGI_DRUM: return sizeof(drum909_part_t);
     case ENGI_FM6: return sizeof(fm6_part_t);
+    case ENGI_FMINI: return sizeof(fmini_part_t);
 #if MELODEE_SLICE
     case ENGI_SLICE: return sizeof(slc_rb_t);
 #endif
@@ -91,6 +93,7 @@ static drw_part_t *drw_of(const track_t *t) { return resource_get(RES_ENGINE0 + 
 static fm6_part_t *fm6_part(uint32_t part) { return resource_get(RES_ENGINE0 + part % NPART, sizeof(fm6_part_t)); }
 static cz_part_t *cz_part(uint32_t part) { return resource_get(RES_ENGINE0 + part % NPART, sizeof(cz_part_t)); }
 static sid_part_t *sid_part(uint32_t part) { return resource_get(RES_ENGINE0 + part % NPART, sizeof(sid_part_t)); }
+static fmini_part_t *fmini_part(uint32_t part) { return resource_get(RES_ENGINE0 + part % NPART, sizeof(fmini_part_t)); }
 #if MELODEE_PROPHET
 static p5_part_t *p5_part(uint32_t part) { return resource_get(RES_ENGINE0 + part % NPART, sizeof(p5_part_t)); }
 #endif
@@ -152,6 +155,7 @@ static const engine_t *const ENGINES[NENGINES] = {
     &ENG_P5_TEST,                /* 19: Prophet (ANALOG's ID 0 stays reserved) */
     &ENG_RETIRED,                /* 20: Prophet user-preset namespace */
     &ENG_MIDI,                   /* 21: USB MIDI Track */
+    &ENG_FMINI,                  /* 22: FMINI (FMini-1) */
 };
 
 /* a track's engine number as an index (the audio paths: a compare, cheaper than % NENGINES; a bad number: 0) */
@@ -187,6 +191,7 @@ static const uint8_t ENGINE_ORDER[NENG_SHOWN] = {
 #else
     ENGI_CZ, 3,                   /* CZ-1 SID */
 #endif
+    ENGI_FMINI,                  /* FMINI */
 #if MELODEE_SLICE
     13,                          /* SLICE */
 #endif

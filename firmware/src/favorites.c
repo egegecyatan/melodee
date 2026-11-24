@@ -16,13 +16,17 @@
  *   row 0 bytes 2..27 hold all 201 Prophet factory stars, tagged in bytes 28..31;
  *         bytes 0..1 held retired ANALOG's stars.
  *   row 1 bytes 24..27 hold tagged CLICK LEVEL (CK + version 1 + percent; FX RATE's FQ until 1.2); 28..31 mark validated Melodee settings (MDS + version 1).
- * Rows 1 (DIGITAL, retired), 4 (SAMPLE) and 13 (SLICE, built with MELODEE_SLICE) may hold Felucca 1.0's stars; 6, 7, 9 are LEGACY_EXTRAS' engines. Native FM6 slots: row 12 bits 24..87. */
+ * Rows 1 (DIGITAL, retired), 4 (SAMPLE) and 13 (SLICE, built with MELODEE_SLICE) may hold Felucca 1.0's stars; 6, 7, 9 are LEGACY_EXTRAS' engines. Native FM6 slots: row 12 bits 24..87.
+ *   row 5  (VOICE, retired; its 4 presets' stars in bits 0..3) bits 64..255 hold FMINI's (engine 22) 192 factory stars. */
 typedef struct {
     uint8_t factory[16][32]; /* engine 0..15, preset 0..255 */
     uint32_t user, filter;
 } favorites_t;
 static favorites_t favorites;
 static uint32_t favorites_user_hi;
+#define FMINI_FAV_ROW 5u              /* FMINI (engine 22, past the 16 rows): row 5 bits 64.. (above) */
+#define FMINI_FAV_BIT 64u
+#define FMINI_FAV_N 192u              /* (eng_fmini.c FMINI_NSLOT) */
 /* Scale favorites use the upper half of retired engine 14's PER5 row. Keep
  * old preset bits 0..127 intact; tagged storage ignores unrecognized bytes.
  * No settings/template layout change. */
@@ -57,6 +61,9 @@ static int favorite_has(uint32_t engine, uint32_t preset)
     if(engine==USER_NATIVE_P5 || engine==USER_NATIVE_FM || engine==USER_NATIVE_CZ)engine=USER_GENERAL;
     if (engine == USER_GENERAL)
         return up_favorite(preset);
+    if (engine == ENGI_FMINI)
+        return preset < FMINI_FAV_N &&
+            ((favorites.factory[FMINI_FAV_ROW][(FMINI_FAV_BIT + preset) / 8u] >> ((FMINI_FAV_BIT + preset) % 8u)) & 1u);
     return engine < NENGINES && engine < 16u && preset < 256u &&
         ((favorites.factory[engine][preset / 8u] >> (preset % 8u)) & 1u);
 }
@@ -64,11 +71,16 @@ static int favorite_set(uint32_t engine, uint32_t preset, int on)
 {
     if(engine==ENGI_PROPHET)return p5_favorite_set(preset,on,1);
     if(engine==USER_NATIVE_P5 || engine==USER_NATIVE_FM || engine==USER_NATIVE_CZ)engine=USER_GENERAL;
-    if (engine >= NENGINES || (engine == USER_GENERAL ? preset >= UP_SLOTS : engine >= 16u || preset >= 256u))
+    if (engine == ENGI_FMINI ? preset >= FMINI_FAV_N :
+        engine >= NENGINES || (engine == USER_GENERAL ? preset >= UP_SLOTS : engine >= 16u || preset >= 256u))
         return 0;
     if (favorite_has(engine, preset) == !!on) return 0;
     if (engine == USER_GENERAL) {
         return up_favorite_set(preset,on);
+    } else if (engine == ENGI_FMINI) {
+        uint8_t *b = &favorites.factory[FMINI_FAV_ROW][(FMINI_FAV_BIT + preset) / 8u];
+        if (on) *b |= (uint8_t)(1u << ((FMINI_FAV_BIT + preset) % 8u));
+        else *b &= (uint8_t)~(1u << ((FMINI_FAV_BIT + preset) % 8u));
     } else {
         uint8_t *b = &favorites.factory[engine][preset / 8u];
         if (on) *b |= (uint8_t)(1u << (preset % 8u));

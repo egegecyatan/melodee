@@ -124,6 +124,7 @@ static void host_tracks_init(void)                /* as melodee_init: defaults, 
     trk_voices_bind();
     midi_insert_init();
     cz_init();
+    fmini_init();
     pattern_init();
     uint32_t i, k;
     for (i = 0; i < G_COUNT; i++)
@@ -156,6 +157,7 @@ static void host_preset_values(track_t *t, uint32_t e, uint32_t pi, const preset
     cz_factory_loaded(t);
     if(e==ENGI_PROPHET){uint32_t k=(uint32_t)(t-trk)%NPART;p5_ready[k]=1;p5_preset_loaded(t,pi);}   /* (its program, as ui.c) */
     fm6_track_loaded(t);                          /* FM6: the preset's patch (ui.c apply_preset_to) */
+    fmini_track_loaded(t);                        /* FMINI: the SLOT's patch, the preset's LFO (ui.c apply_preset_to) */
 }
 static void host_preset_req(track_t *t, uint32_t e, uint32_t pi)
 {

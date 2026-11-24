@@ -221,6 +221,8 @@ bytes). An upload writes over it like any other data; a record that is not the s
 | 3 | TIME | 8 | ENUM | 13 | STEPS |
 | 4 | LFOHZ | 9 | BPM | | |
 
+20 PATCH (FMINI's SLOT): a patch number shown from 1, `value − min + 1`.
+
 The editor should show the value with the unit; formatting it exactly like the device does
 is not required.
 
@@ -733,6 +735,15 @@ without it there is no answer. `tools/usb_audio_stats.py` reads them.
 | --- | --- | --- |
 | 72 AUDIO_STATS | — or 1 (start new maxima after this reply) | schema (2), then 20 counters, each 5 × 7 bits, LSB first: play alt, capture alt, play rate, capture rate (Hz), play fill, capture fill (frames), play underruns, play overruns, capture underruns, capture overruns, bad packets, packets received, packets sent, missed USB frames, longest gap between services (µs), longest service (µs), late renders, the feedback (10.14), longest render (µs), CPU (Q8) |
 
+
+## FMINI (engine 22)
+
+FMINI is FMini-1's Minimoog-style voice (`firmware/src/eng_fmini.c`): three oscillators and a 24 dB ladder filter.
+EDIT: E0 CUT, E1 EMPH, E2 CNTR, E3 F.ATK, E4 F.DEC, E5 F.SUS, E6 MOD (0..127 each), E7 SLOT (fmt 20 PATCH, −64..127:
+patch `E7 + 64`, shown 1..192). A stored parameter is one byte, so SLOT holds `slot − 64` and reaches FMini-1's first
+192 factory patches. The 192 factory presets are preset k = slot k (E7 = k − 64). The patch is not sent or stored: the
+device loads the factory patch of SLOT whenever SLOT changes, so DUMP / SET of E7 is the whole sound. FAV_GET / FAV_SET
+accept engine 22 for its 192 factory presets (firmware without FMINI answers rc 1 for 22, as for any id above 20).
 
 ## OBXF (engine 14)
 

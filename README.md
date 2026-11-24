@@ -1244,6 +1244,7 @@ You can leave a tip with [ko-fi](https://ko-fi.com/keremimo).
 - PHYS engine: models ported from [DaisySP](https://github.com/electro-smith/DaisySP) by Electrosmith and Emilie Gillet ([MIT](LICENSES/MIT-DaisySP.txt)) and from Emilie Gillet's [eurorack](https://github.com/pichenettes/eurorack) code ([MIT](LICENSES/MIT-Rings.txt))
 - SID engine: after [reSID](https://github.com/libsidplayfp/resid) by Dag Lem (GPL-2.0-or-later); its samples of a real
   6581's and 8580's combined waveforms are included as data ([assets/resid](assets/resid/README.md))
+- FMINI engine: the voice, ladder filter and factory patches of [FMini-1](https://github.com/ruppert/fmini-1) by Guilherme Ruppert (GPL-3.0-only), itself a fork of Felucca
 - FM6 engine: msfa from [Dexed](https://github.com/asb2m10/dexed) by Google Inc. and Pascal Gauthier ([Apache-2.0](LICENSES/Apache-2.0-msfa.txt))
 - Bluetooth MIDI: the BLE stack of [Optimist](https://github.com/w0ts/optimist) (GPL-3.0-only); provenance in [docs/BLE_MIDI.md](docs/BLE_MIDI.md#source-provenance)
 - Package format and boot files: [JieLi AC79 SDK](https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK) ([Apache-2.0](LICENSES/Apache-2.0.txt); three of its files are in every package, none in this tree)

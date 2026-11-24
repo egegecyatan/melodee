@@ -81,3 +81,7 @@ mix_extra_sends 94
 fx_bus_kernel 267
 # Full-rate stereo chorus: two integer taps; no sample-loop calls or divides.
 fx_chorus 97
+# FMINI (eng_fmini.c, 2026-11-24): the ladder loop, the oscillators (all waves), the part noise
+fmini_render 250
+fmini_wave 104
+fmini_block 75

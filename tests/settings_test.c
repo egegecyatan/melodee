@@ -17,6 +17,7 @@ static int p5_favorite_set(uint32_t slot,int on,int factory){(void)slot;(void)on
 #define USER_NATIVE_CZ 18u
 #define ENGI_FM6 12u
 #define ENGI_CZ 15u
+#define ENGI_FMINI 22u
 static void fm1_led_key(unsigned k, int on) { (void)k; (void)on; }
 static int fm1_enc_take(unsigned k) { (void)k; return 0; }
 static void lcd_sync(void) {}
