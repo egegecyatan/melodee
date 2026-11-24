@@ -57,11 +57,16 @@ HR_CHARS = " #'()+./-_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv
 PIXEL = Path(__file__).resolve().parents[1] / "assets" / "fonts" / "melodee_pixel.txt"
 
 
-# riffton's type tokens (docs/design/README.md "riffton type"): (name, weight, px). Every size of the riffton designs
-# rounds up to one of these (6.5 -> 7, 7.5 -> 8, 8.5 -> 9, 9.5 -> 10); Regular (400) is set in Medium (500). Change a
-# px here to scale a token everywhere. Full ASCII plus the extras on every face (names and values need # b / deg %).
-RIFFTON_TYPE = [("XS", 500, 7), ("XSB", 700, 7), ("S", 500, 8), ("SB", 700, 8), ("M", 500, 9), ("MB", 700, 9),
-                ("V", 500, 10), ("VB", 700, 10), ("H", 700, 11), ("L", 500, 13), ("XL", 700, 15)]
+# riffton's type tokens: (name, weight, px); Regular (400) is set in Medium (500). Full ASCII plus the extras on every
+# face (names and values need # b / deg %).
+# The MEDIUM scale (2026-11-24, after the first device test: the designs' 7 .. 9 px were too small on the 27.7 mm
+# panel), riffton's screens (ui_riff.c RIFF, TRY; gfx.c RT_LABEL ..): nothing below 11 px. Change a px here to scale a
+# token on those screens; each is riffton's own face, so Melodee's pages never move with it.
+RIFFTON_MEDIUM = [("LBL", 500, 11), ("LBLB", 700, 11),   # labels, hints, tags, the wheel's neighbours; role labels
+                  ("VAL", 500, 13), ("VALB", 700, 13),   # values, the header's context; titles, names on a card
+                  ("NAME", 700, 15)]                     # a sound's name where it is the subject
+# the boot screen's (still the designs' sizes) and Melodee's four roles (TY_*: its pages)
+RIFFTON_TYPE = [("XS", 500, 7), ("M", 500, 9), ("V", 500, 10), ("L", 500, 13), ("XL", 700, 15)] + RIFFTON_MEDIUM
 RIFFTON_WORD = ("W", 700, 40, "riffton")             # the wordmark (boot): its letters alone
 # Melodee's four roles (the deep pages, TY_*) set in riffton's faces
 RIFFTON_ROLES = {"LB": "M", "TX": "V", "VL": "L", "HR": "XL"}
@@ -70,15 +75,15 @@ RIFFTON_ROLES = {"LB": "M", "TX": "V", "VL": "L", "HR": "XL"}
 def preset(name):
     if name == "riffton":
         v = str(FONTS.parent / "assets" / "fonts" / "SpaceGrotesk[wght].ttf")    # SIL OFL 1.1, Google Fonts
-        # two phases (half-pixel pens) for the Medium faces up to 10 px, the labels and values where a pixel of
-        # spacing shows; one for the rest (the bold faces take the Medium's kerning: a phase gains them less)
-        faces = [(n, f"{v}@{w}", px, (32, 126), EXTRAS + [0x221E], -0.0, PHASES if px <= 10 and w == 500 else 1)
+        # two phases (half-pixel pens) for the Medium faces up to 11 px, where a pixel of spacing shows (the MEDIUM
+        # labels most of all); one for the rest (a bold face's half-pixel bitmaps land no closer at these sizes)
+        faces = [(n, f"{v}@{w}", px, (32, 126), EXTRAS + [0x221E], -0.0, PHASES if px <= 11 and w == 500 else 1)
                  for n, w, px in RIFFTON_TYPE]
         n, w, px, word = RIFFTON_WORD
         faces.append((n, f"{v}@{w}", px, (32, 32), sorted({ord(c) for c in word}), -0.03, 1))
         # Melodee Pixel at 1 x for the small tokens (Settings > FONT: the face of text at 8 px and below), and for
         # the deep pages' roles on their riffton faces' lines
-        pix = [("XS", 1, 0), ("XSB", 1, 0), ("S", 1, 0), ("SB", 1, 0)] + \
+        pix = [("XS", 1, 0)] + \
               [(r, 2 if r == "HR" else 1, 0) for r in RIFFTON_ROLES]
         faces.append(("PIX", str(PIXEL), 0, (32, 126), EXTRAS, None, 1, pix))
         return faces

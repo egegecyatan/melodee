@@ -22,8 +22,6 @@
 #define RT_DIM RGB(0x5C, 0x59, 0x66)
 #define RT_FAINT RGB(0x3A, 0x3A, 0x46)     /* TRY's outer wheel rows */
 #define RT_REC RGB(0xFF, 0x4D, 0x5E)
-#define RT_HEAD_H 20                       /* the header, everywhere */
-#define RT_FOOT_Y 207                      /* the footer's top line: four knob cells */
 static const uint16_t RT_ROLE_C[4] = {RGB(0xFF, 0x6B, 0x4A), RGB(0xF5, 0xC0, 0x4A), RGB(0x3D, 0xC9, 0xB8),
                                       RGB(0xA7, 0x8B, 0xFA)};
 static const char *const RT_ROLE[4] = {"BASS", "LEAD", "PAD", "ARP"};
@@ -253,10 +251,14 @@ static uint32_t rt_play_step(void)            /* the playhead, in steps (0xFFFF:
 }
 
 /* --------------------------------------------------------- drawing --- */
+/* The MEDIUM scale (2026-11-24): nothing below 11 px on RIFF and TRY (gfx.c RT_LABEL .. RT_NAME). The layout's rows
+ * below are set for its faces' heights: 11 px lines 15 tall, 13 px 17, 15 px 20 */
+#define RT_HEAD_H 24                       /* the header: title and context 13 px */
+#define RT_FOOT_Y 202                      /* the footer: an 11 px label over a 13 px value */
 static void rt_play_glyph(int32_t x, int32_t cy, uint16_t c)   /* the transport's triangle (the font has none) */
 {
-    for (int32_t r = -3; r <= 3; r++)
-        cv_rect(x, cy + r, 4 - (r < 0 ? -r : r), 1, c);
+    for (int32_t r = -4; r <= 4; r++)
+        cv_rect(x, cy + r, 5 - (r < 0 ? -r : r), 1, c);
 }
 /* free text (a name: the lint allows its ellipsis), centred on xc in at most maxw px */
 static void rt_free_c(int32_t xc, int32_t y, const aafont_t *f, const char *s, uint16_t fg, uint16_t bg, int32_t maxw)
@@ -273,45 +275,42 @@ static void rt_box(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t fill, ui
     } else
         cv_rrect(x, y, w, h, 4, fill, under);
 }
-/* the header: title (in a colour), the context in secondary text, the transport at the right */
-static void rt_head(const char *title, uint16_t tc, const char *ctx)
+/* the header: the title, the context in secondary text (a toast in its place), right: the transport or `right` */
+static int32_t rt_head(const char *title, uint16_t tc, const char *ctx, int32_t right)
 {
-    char bpm[8];
-    int32_t x = 8, cy = 10;
+    int32_t x = 8, cy = RT_HEAD_H / 2;
     if (song.rec) {
         cv_disc(x + 3, cy, 7, RT_REC, 0);
         x += 13;
     }
-    x = cv_text_on(x, ty_y(cy, RT_H), RT_H, title, tc, RT_BG) + 6;
+    x = cv_text_on(x, ty_y(cy, RT_TITLE), RT_TITLE, title, tc, RT_BG) + 7;
     if (ui.msg_t && ui.msg[0])
-        ctx = ui.msg;                         /* (a toast: in the context's place) */
-    fmt_int(bpm, song.g[G_BPM]);
-    {
-        int32_t bw = text_w(RT_M, bpm);
-        cv_free_text(x, ty_y(cy, RT_M), RT_M, ctx, RT_SEC, RT_BG, 232 - bw - 10 - x);
-        cv_text_on(232 - bw, ty_y(cy, RT_M), RT_M, bpm, RT_TEXT, RT_BG);
-        rt_play_glyph(232 - bw - 7, cy, song.playing ? RT_TEXT : RT_DIM);
+        ctx = ui.msg;
+    if (!right) {                             /* (the transport: the tempo, a triangle while playing) */
+        char bpm[8];
+        int32_t bw;
+        fmt_int(bpm, song.g[G_BPM]);
+        bw = text_w(RT_VALUE, bpm);
+        cv_text_on(232 - bw, ty_y(cy, RT_VALUE), RT_VALUE, bpm, RT_TEXT, RT_BG);
+        rt_play_glyph(232 - bw - 9, cy, song.playing ? RT_TEXT : RT_DIM);
+        right = 232 - bw - 9;
     }
+    cv_free_text(x, ty_y(cy, RT_VALUE), RT_VALUE, ctx, RT_SEC, RT_BG, right - 8 - x);
     cv_rect(0, RT_HEAD_H - 1, 240, 1, RT_LINE);
+    return cy;
 }
-/* the footer: four knob cells, K1 .. K4: a label and a value */
-static void rt_foot(const char *const *label, const char *const *value, const uint16_t *vc)
+/* the footer: cells of a label (11 px) over a value (13 px); w: their widths (RIFF's: K2 wider for a sound's name) */
+static void rt_foot(const char *const *label, const char *const *value, const uint16_t *vc, const uint8_t *w, uint32_t n,
+                    uint16_t lc)
 {
+    int32_t x = 0;
     cv_rect(0, RT_FOOT_Y, 240, 1, RT_LINE);
-    for (uint32_t k = 0; k < 4u; k++) {
-        int32_t x = (int32_t)k * 60;
+    for (uint32_t k = 0; k < n; k++) {
         if (k) cv_rect(x, RT_FOOT_Y + 1, 1, 240 - RT_FOOT_Y - 1, RT_LINE);
-        cv_text_on(x + 6, RT_FOOT_Y + 5, RT_XS, label[k], RT_DIM, RT_BG);
-        cv_free_text(x + 6, RT_FOOT_Y + 15, RT_V, value[k], vc[k], RT_BG, 50);   /* (K2: a sound's name) */
-    }
-}
-static void rt_hints(int32_t y, const char *const *key, const char *const *what, uint32_t n)
-{
-    int32_t x = 8;
-    cv_rect(0, y, 240, 1, RT_LINE);
-    for (uint32_t i = 0; i < n; i++) {
-        x = cv_text_on(x, ty_y(y + 12, RT_SB), RT_SB, key[i], RT_TEXT, RT_BG) + 3;
-        x = cv_text_on(x, ty_y(y + 12, RT_S), RT_S, what[i], RT_SEC, RT_BG) + 10;
+        cv_text_on(x + 5, ty_y(RT_FOOT_Y + 11, RT_LABEL), k < n && lc != RT_DIM ? RT_LABEL_B : RT_LABEL, label[k], lc,
+                   RT_BG);
+        cv_free_text(x + 5, ty_y(RT_FOOT_Y + 27, RT_VALUE), RT_VALUE, value[k], vc[k], RT_BG, w[k] - 8);
+        x += w[k];
     }
 }
 
@@ -354,6 +353,11 @@ static void rt_roll(uint32_t k, int32_t x0, int32_t y0, int32_t w, int32_t h, ui
         }
     }
 }
+/* RIFF's rows: the chords (at the rolls' left edge, a cell a bar), the layers: the selected 54 tall, the others 30 */
+#define RT_ROLL_X 74                       /* the rolls' and the chord cells' left edge: the layers' names left of it */
+#define RT_ROLL_W 156
+#define RT_CHORD_Y 27
+#define RT_LAYER_Y 49
 static void rt_draw_riff(void)
 {
     char name[16], ctx[40], ch[12];
@@ -364,37 +368,38 @@ static void rt_draw_riff(void)
     str_cpy(ctx + str_len(ctx), " \xB7 ", sizeof ctx - str_len(ctx));
     fmt_int(ctx + str_len(ctx), (int32_t)bars);
     str_cpy(ctx + str_len(ctx), bars == 1u ? " bar" : " bars", sizeof ctx - str_len(ctx));
-    rt_head(name, RT_TEXT, ctx);
-    /* the chords: a cell per bar */
-    cw = (int32_t)((186u - 2u * (bars - 1u)) / bars);
-    for (k = 0; k < bars; k++) {
-        int32_t x = 48 + (int32_t)k * (cw + 2);
+    rt_head(name, RT_TEXT, ctx, 0);
+    cw = (int32_t)((RT_ROLL_W + 4u - 2u * (bars - 1u)) / bars);
+    for (k = 0; k < bars; k++) {              /* the chords: a cell per bar, the playing one lit */
+        int32_t x = RT_ROLL_X - 2 + (int32_t)k * (cw + 2);
         int on = k == cur;
-        cv_rrect(x, 24, cw, 15, 3, on ? RT_LINE : RT_PANEL, RT_BG);
+        cv_rrect(x, RT_CHORD_Y, cw, 19, 3, on ? RT_LINE : RT_PANEL, RT_BG);
         if (rt_bar_chord(k, ch))
-            cv_text_c(x + cw / 2, ty_y(31, RT_M), RT_M, ch, on ? RT_TEXT : RT_SEC, on ? RT_LINE : RT_PANEL);
+            rt_free_c(x + cw / 2, ty_y(RT_CHORD_Y + 9, RT_VALUE), RT_VALUE, ch, on ? RT_TEXT : RT_SEC,
+                      on ? RT_LINE : RT_PANEL, cw - 4);
     }
-    /* the layers, the selected one taller and outlined in its colour */
-    for (k = 0, y = 43; k < 4u; k++) {
+    for (k = 0, y = RT_LAYER_Y; k < 4u; k++) {   /* the layers, the selected one taller and outlined in its colour */
         int s = k == sel;
-        int32_t h = s ? 56 : 33;
+        int32_t h = s ? 54 : 30;
         uint16_t c = RT_ROLE_C[k], fill = s ? RT_RAISED : RT_PANEL;
         uint32_t e, p;
         rt_box(6, y, 228, h, fill, s ? c : fill, RT_BG);
-        cv_text_on(10, ty_y(y + h / 2 - 5, RT_MB), RT_MB, RT_ROLE[k], c, fill);
+        cv_text_on(11, ty_y(y + h / 2 - 7, RT_LABEL_B), RT_LABEL_B, RT_ROLE[k], c, fill);
         rt_cur(k, &e, &p);
-        cv_free_text(10, ty_y(y + h / 2 + 5, RT_XS), RT_XS, rt_name(e, p), RT_SEC, fill, 36);
+        cv_free_text(11, ty_y(y + h / 2 + 6, RT_LABEL), RT_LABEL, rt_name(e, p), s ? RT_TEXT : RT_SEC, fill,
+                     RT_ROLL_X - 14);
         cv_bg = fill;
-        rt_roll(k, 50, y + 3, 180, h - 6, s ? c : rt_mix(fill, c, 75));
+        rt_roll(k, RT_ROLL_X, y + 4, RT_ROLL_W, h - 8, s ? c : rt_mix(fill, c, 75));
         cv_bg = RT_BG;
-        y += h + 3;
+        y += h + 2;
     }
     if (ph != 0xFFFFu) {                      /* the playhead, across all four */
-        int32_t x = 50 + (int32_t)(ph * 180u / rt_steps());
-        cv_rect(x, 45, 1, y - 48, rt_mix(RT_BG, RT_TEXT, 60));
+        int32_t x = RT_ROLL_X + (int32_t)(ph * RT_ROLL_W / rt_steps());
+        cv_rect(x, RT_LAYER_Y + 2, 1, y - RT_LAYER_Y - 6, rt_mix(RT_BG, RT_TEXT, 60));
     }
     {
         static const char *const L[4] = {"K1 LAYER", "K2 SOUND", "K3 TAKE", "K4 LEVEL"};
+        static const uint8_t W[4] = {55, 79, 48, 58};   /* (each label whole; K2 holds a sound's name) */
         char lvl[8];
         const char *v[4];
         uint16_t vc[4] = {RT_ROLE_C[sel], RT_TEXT, RT_TEXT, RT_TEXT};
@@ -405,11 +410,15 @@ static void rt_draw_riff(void)
         v[1] = rt_name(e, p);
         v[2] = "A";                            /* (takes: the WRITE phase) */
         v[3] = lvl;
-        rt_foot(L, v, vc);
+        rt_foot(L, v, vc, W, 4, RT_DIM);
     }
 }
 
 /* --------------------------------------------------------------- TRY --- */
+/* a column's rows (centres): the role, two neighbours above, the card, two below, the level */
+#define RT_TRY_ROLE 34
+#define RT_CARD_Y 73
+#define RT_CARD_H 68
 static void rt_draw_try(void)
 {
     char ctx[32], tags[32];
@@ -419,15 +428,14 @@ static void rt_draw_try(void)
         str_cpy(ctx, RT_ROLE[rt.solo - 1u], sizeof ctx);
         str_cpy(ctx + str_len(ctx), " solo", sizeof ctx - str_len(ctx));
     }
-    {   /* the header: TRY, the riff, the A/B chip */
-        int32_t x = cv_text_on(8, ty_y(10, RT_H), RT_H, "TRY", RT_TEXT, RT_BG) + 6;
+    {   /* the header: TRY, the riff, right: the A/B chip and what the other one is */
         const char *ab = rt.show_a ? "A" : "B", *kept = rt.show_a ? "B = new" : "A = kept";
-        int32_t kw = text_w(RT_S, kept), cw = text_w(RT_S, ab) + 8;
-        cv_free_text(x, ty_y(10, RT_M), RT_M, ui.msg_t && ui.msg[0] ? ui.msg : ctx, RT_SEC, RT_BG, 232 - kw - cw - 8 - x);
-        cv_rrect(232 - kw - 6 - cw, 4, cw, 12, 3, RT_TEXT, RT_BG);
-        cv_text_on(232 - kw - 6 - cw + 4, ty_y(10, RT_S), RT_S, ab, RT_BG, RT_TEXT);
-        cv_text_on(232 - kw, ty_y(10, RT_S), RT_S, kept, RT_DIM, RT_BG);
-        cv_rect(0, RT_HEAD_H - 1, 240, 1, RT_LINE);
+        int32_t kw = text_w(RT_LABEL, kept), cw = text_w(RT_LABEL_B, ab) + 10, cy = RT_HEAD_H / 2;
+        int32_t cx = 232 - kw - 6 - cw;
+        cv_rrect(cx, cy - 8, cw, 16, 3, RT_TEXT, RT_BG);
+        cv_text_on(cx + 5, ty_y(cy, RT_LABEL_B), RT_LABEL_B, ab, RT_BG, RT_TEXT);
+        cv_text_on(232 - kw, ty_y(cy, RT_LABEL), RT_LABEL, kept, RT_DIM, RT_BG);
+        rt_head("TRY", RT_TEXT, ctx, cx);
     }
     for (uint32_t k = 0; k < 4u; k++) {      /* the columns: the sound wheel, the level */
         int32_t x = 4 + (int32_t)k * 58, w = 55, cx = x + w / 2;
@@ -438,52 +446,56 @@ static void rt_draw_try(void)
         char kn[4] = {'K', (char)('1' + k), 0, 0};
         const rt_sound_t *n;
         rt_cur(k, &e, &p);
-        cv_text_on(x + 2, ty_y(31, RT_MB), RT_MB, RT_ROLE[k], dim ? RT_DIM : c, RT_BG);
-        cv_text_r(x + w - 2, ty_y(31, RT_XS), RT_XS, kn, RT_DIM, RT_BG);
+        cv_text_on(x + 2, ty_y(RT_TRY_ROLE, RT_LABEL_B), RT_LABEL_B, RT_ROLE[k], dim ? RT_DIM : c, RT_BG);
+        cv_text_r(x + w - 1, ty_y(RT_TRY_ROLE, RT_LABEL), RT_LABEL, kn, RT_DIM, RT_BG);
         for (i = 0; i < 4u; i++) {            /* the neighbours: two above, two below */
             static const int8_t OFF[4] = {-2, -1, 1, 2};
-            static const uint8_t CY[4] = {46, 62, 140, 156};
-            if ((n = rt_step(k, e, p, OFF[i])) != 0) {
-                rt_free_c(cx, ty_y(CY[i], RT_S), RT_S, RT_NAMES + n->name, (i == 0u || i == 3u) ? RT_FAINT : RT_DIM, RT_BG,
-                          w - 2);
-            }
+            static const uint8_t CY[4] = {50, 64, 151, 165};
+            if ((n = rt_step(k, e, p, OFF[i])) != 0)
+                rt_free_c(cx, ty_y(CY[i], RT_LABEL), RT_LABEL, RT_NAMES + n->name, (i == 0u || i == 3u) ? RT_FAINT : RT_DIM,
+                          RT_BG, w - 2);
         }
-        rt_box(x, 72, w, 58, fill, dim ? RT_LINE : c, RT_BG);
-        {   /* the sound now: its name (two lines when long), its tags, kept / CHANGED */
+        rt_box(x, RT_CARD_Y, w, RT_CARD_H, fill, dim ? RT_LINE : c, RT_BG);
+        {   /* the sound now: its name (two lines when long), its first tag, kept / CHANGED */
             const char *nm = rt_name(e, p);
             char l1[24], l2[24];
-            uint32_t j = 0, cut = 0;
+            uint32_t j, cut = 0;
             str_cpy(l1, nm, sizeof l1);
-            if (text_w(RT_VB, l1) > w - 6) {  /* (the last space that fits) */
+            if (text_w(RT_VALUE_B, l1) > w - 6)   /* (the last space that fits) */
                 for (j = 0; l1[j]; j++) {
                     if (l1[j] != ' ') continue;
                     l1[j] = 0;
-                    if (text_w(RT_VB, l1) <= w - 6) cut = j;
+                    if (text_w(RT_VALUE_B, l1) <= w - 6) cut = j;
                     l1[j] = ' ';
                 }
-            }
             l2[0] = 0;
             if (cut) {
                 str_cpy(l2, l1 + cut + 1u, sizeof l2);
                 l1[cut] = 0;
             }
             if (l2[0]) {
-                rt_free_c(cx, ty_y(88, RT_VB), RT_VB, l1, dim ? RT_SEC : RT_TEXT, fill, w - 6);
-                rt_free_c(cx, ty_y(99, RT_VB), RT_VB, l2, dim ? RT_SEC : RT_TEXT, fill, w - 6);
+                rt_free_c(cx, ty_y(RT_CARD_Y + 14, RT_VALUE_B), RT_VALUE_B, l1, dim ? RT_SEC : RT_TEXT, fill, w - 6);
+                rt_free_c(cx, ty_y(RT_CARD_Y + 30, RT_VALUE_B), RT_VALUE_B, l2, dim ? RT_SEC : RT_TEXT, fill, w - 6);
             } else
-                rt_free_c(cx, ty_y(93, RT_VB), RT_VB, l1, dim ? RT_SEC : RT_TEXT, fill, w - 6);
+                rt_free_c(cx, ty_y(RT_CARD_Y + 22, RT_VALUE_B), RT_VALUE_B, l1, dim ? RT_SEC : RT_TEXT, fill, w - 6);
             rt_tags(e, p, tags, sizeof tags);
+            for (j = 0; tags[j] && tags[j] != ' '; j++)
+                ;
+            tags[j] = 0;                      /* (the first tag: the second does not fit at 11 px) */
             if (tags[0])
-                rt_free_c(cx, ty_y(110, RT_XS), RT_XS, tags, RT_SEC, fill, w - 4);
-            cv_text_c(cx, ty_y(121, RT_XS), RT_XS, chg ? "CHANGED" : "kept", chg ? RT_TEXT : RT_DIM, fill);
+                rt_free_c(cx, ty_y(RT_CARD_Y + 46, RT_LABEL), RT_LABEL, tags, RT_SEC, fill, w - 4);
+            rt_free_c(cx, ty_y(RT_CARD_Y + 59, RT_LABEL), RT_LABEL, chg ? "CHANGED" : "kept", chg ? RT_TEXT : RT_DIM, fill,
+                      w - 4);
         }
-        cv_rrect(x + 4, 167, w - 8, 3, 1, RT_LINE, RT_BG);
-        cv_rrect(x + 4, 167, (w - 8) * trk[k].p[P_LEVEL] / 127 > 2 ? (w - 8) * trk[k].p[P_LEVEL] / 127 : 2, 3, 1,
+        cv_rrect(x + 4, 177, w - 8, 3, 1, RT_LINE, RT_BG);
+        cv_rrect(x + 4, 177, (w - 8) * trk[k].p[P_LEVEL] / 127 > 2 ? (w - 8) * trk[k].p[P_LEVEL] / 127 : 2, 3, 1,
                  dim ? RT_DIM : c, RT_LINE);
     }
-    {
+    {   /* the hints: three cells, the button over what it does */
         static const char *const K[3] = {"OCT+", "SELECT", "ALGO"}, *const W[3] = {"keep B", "A/B", "solo"};
-        rt_hints(218, K, W, 3);
+        static const uint8_t CW[3] = {80, 80, 80};
+        static const uint16_t VC[3] = {RT_SEC, RT_SEC, RT_SEC};
+        rt_foot(K, W, VC, CW, 3, RT_TEXT);
     }
 }
 

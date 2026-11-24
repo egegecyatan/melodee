@@ -50,17 +50,15 @@ static uint32_t ty_pixel(void);
  * pixel (ty_pixel) */
 #define RT_SMALL(n) (ty_pixel() ? &AP_##n : &AF_##n)
 #define RT_BIG(n, pix) (RES_OK() ? &AF_##n : &AP_##pix)
-#define RT_XS RT_SMALL(XS)        /* 7 px: knob labels, tags, hints, credits */
-#define RT_XSB RT_SMALL(XSB)
-#define RT_S RT_SMALL(S)          /* 8 px: neighbours, chips, hints */
-#define RT_SB RT_SMALL(SB)
-#define RT_M RT_BIG(M, LB)        /* 9 px: context, chords, modes */
-#define RT_MB RT_BIG(MB, LB)      /* 9 px bold: role labels, riff names */
-#define RT_V RT_BIG(V, TX)        /* 10 px: values, sound names */
-#define RT_VB RT_BIG(VB, TX)
-#define RT_H RT_BIG(H, TX)        /* 11 px bold: screen titles */
-#define RT_L RT_BIG(L, VL)        /* 13 px: macro values */
-#define RT_XL RT_BIG(XL, HR)      /* 15 px bold: chord symbols */
+#define RT_XS RT_SMALL(XS)        /* the boot screen (the designs' sizes): 7 px credit, 9 px line */
+#define RT_M RT_BIG(M, LB)
+/* the MEDIUM scale: RIFF and TRY, nothing below 11 px (tools/gen_aa_font.py RIFFTON_MEDIUM: change a px there) */
+#define RT_LABEL RT_BIG(LBL, LB)      /* 11 px: knob labels, hints, tags, the wheel's neighbours */
+#define RT_LABEL_B RT_BIG(LBLB, LB)   /* 11 px bold: role labels, the hints' buttons */
+#define RT_VALUE RT_BIG(VAL, TX)      /* 13 px: values, chords, the header's context and tempo */
+#define RT_VALUE_B RT_BIG(VALB, TX)   /* 13 px bold: names on a TRY card */
+#define RT_TITLE RT_VALUE_B           /* 13 px bold: the screen's title */
+#define RT_NAME RT_BIG(NAME, VL)      /* 15 px bold: a sound's name as the subject */
 #define RT_W RT_BIG(W, HR)        /* 40 px bold: the wordmark */
 
 /* host tests hook in here (layout lint, draw cost); nothing in the firmware */

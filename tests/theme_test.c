@@ -144,9 +144,11 @@ int main(int argc, char **argv)
      * baselines; tabular digits; the ellipsis; HR small letters too */
     assert(AF_LB.h == 12 && AF_LB.asc == 9 && AF_TX.h == 13 && AF_TX.asc == 10 && AF_VL.h == 17 && AF_VL.asc == 13 &&
            AF_HR.h == 20 && AF_HR.asc == 15);
+    /* the MEDIUM scale (riffton's screens): nothing below 11 px */
+    assert(AF_LBL.cap >= 8 && AF_LBLB.cap >= 8 && AF_VAL.h == 17 && AF_VALB.h == 17 && AF_NAME.h == 20);
     {   /* (the riffton brief: every size names and values use has both cases and # b / deg middle-dot %; ▶ is drawn) */
-        static const aafont_t *const RT[] = {&AF_XS, &AF_XSB, &AF_S, &AF_SB, &AF_M, &AF_MB, &AF_V, &AF_VB, &AF_H, &AF_L,
-                                             &AF_XL};
+        static const aafont_t *const RT[] = {&AF_XS, &AF_M, &AF_V, &AF_L, &AF_XL, &AF_LBL, &AF_LBLB, &AF_VAL, &AF_VALB,
+                                             &AF_NAME};
         static const uint8_t NEED[] = {'#', 'b', '/', '%', 0xB0, 0xB7, 0x86};
         for (unsigned f = 0; f < sizeof RT / sizeof RT[0]; f++) {
             for (unsigned c = 'A'; c <= 'z'; c++)
