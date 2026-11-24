@@ -11,6 +11,7 @@
 #include "ui_test.c"
 #undef main
 #undef __attribute__
+#include "riffton_demo.h"                         /* riffton: a two-bar riff to try sounds against */
 
 /* the key matrix (hal/fm1_input.h): ui_test.c only declares it, so ui_leds' LEDs would land nowhere */
 static const int8_t FM1_KEYMAP[6][FM1_NCOL] = {
@@ -33,6 +34,9 @@ EXPORT(web_boot) void web_boot(uint32_t master)       /* main.c melodee_init, as
     cz_init();
     fmini_init();                                     /* FMINI: every part's patch, the noise seeds */
     ui_power_on();
+    rt_demo();                                        /* (riffton: the demo riff, stopped; PLAY starts it) */
+    song.playing = 0;
+    trk[0].seq_idx = 0;
     song.master_q12 = (master * master) >> 8;
     settings.palette = UI_DEFAULT_INDEX;
     palette_set(settings.palette);
